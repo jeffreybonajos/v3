@@ -1,0 +1,36 @@
+{
+  "name": "awesomev3",
+  "version": "1.0.0",
+  "description": "version three",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "build": "next build",
+    "now-build": "next build",
+    "start": "NODE_ENV=production node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeffreybonajos/awesomev3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeffreybonajos/awesomev3/issues"
+  },
+  "homepage": "https://github.com/jeffreybonajos/awesomev3#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "isomorphic-fetch": "^2.2.1",
+    "isomorphic-unfetch": "^3.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.17.1",
+    "next": "^8.0.0",
+    "nodemon": "^1.19.4",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "styled-components": "^4.4.0"
+  }
+}
