@@ -23,7 +23,7 @@ router.post('/api/auth/login', async (req, res) => {
       type: AUTH_USER_TYPE
     }
     res.cookie('token', userData, COOKIE_OPTIONS);
-    res.status(200).json(userData);
+    res.status(200).json({userData, userProfile});
   } catch(error) {
     res.json(error)
   } 

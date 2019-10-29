@@ -18,7 +18,6 @@ const StyledContainer = styled.div`
 `;
 const Layout = ({ children, title, auth }) => {
   const { user = {} } = auth || {};
-  console.log("layout", user);
   return (
     <>
       {title !== "Login" ? (
@@ -35,5 +34,4 @@ const Layout = ({ children, title, auth }) => {
     </>
   );
 };
-
 export default Layout;
