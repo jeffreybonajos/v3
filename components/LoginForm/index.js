@@ -1,5 +1,6 @@
 import Router from "next/router";
 import { loginUser } from "../../lib/Auth";
+import Modal from "../UI/Modal";
 import styled from "styled-components";
 
 const StyledInput = styled.input`
@@ -37,25 +38,52 @@ const StyledButton = styled.button`
   -webkit-transition-duration: 0.4s; /* Safari */
   transition-duration: 0.4s;
 
-  ::placeholder {
-    /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: red;
-    opacity: 1; /* Firefox */
-  }
   &:hover,
   &:active,
   &:focus {
     transform: scale(1.1);
   }
 `;
+const StyledImg = styled.img`
+  padding-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100px;
+`;
+const StyledErrorButton = styled.button`
+  background: rgb(202, 60, 60);
+  width: 100px;
+  height: 50px;
+  color: white;
+  font-size: 14px;
+  border-radius: 4px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.1s;
+  &:hover,
+  &:active,
+  &:focus {
+    transform: scale(1.1);
+  }
+`;
+const StyledErrorMsg = styled.h1`
+  font-family: "Roboto", sans-serif;
+`;
 class LoginForm extends React.Component {
   state = {
     username: "",
     password: "",
     error: "",
-    isLoading: false
+    isLoading: false,
+    invalidCredentials: false
   };
 
+  handleModalClose = () => {
+    this.setState({ invalidCredentials: false });
+  };
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -72,39 +100,57 @@ class LoginForm extends React.Component {
       .catch(this.showError);
   };
 
-  showError = err => {
-    console.error("error", err);
-    const error = (err.response && err.response.data) || err.message;
-    this.setState({ error, isLoading: false });
+  showError = () => {
+    this.setState({ isLoading: false, invalidCredentials: true });
   };
 
   render() {
     const { error, isLoading } = this.state;
-
+    let invalidCredentialsError = null;
+    invalidCredentialsError = (
+      <div>
+        <StyledImg src="/static/error.png" alt="Error" />
+        <StyledErrorMsg>WRONG USERNAME OR PASSWORD</StyledErrorMsg>
+        <br />
+        <StyledErrorButton onClick={this.handleModalClose}>
+          OK
+        </StyledErrorButton>
+      </div>
+    );
     return (
-      <form onSubmit={this.handleSubmit}>
-        <div>
-          <StyledInput
-            type="text"
-            name="username"
-            placeholder="Username"
-            onChange={this.handleChange}
-            textAlign="center"
-          />
-        </div>
-        <div>
-          <StyledInput
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={this.handleChange}
-          />
-        </div>
-        <StyledButton disabled={isLoading} type="submit">
-          {isLoading ? "Logging in" : "Login"}
-        </StyledButton>
-        {error && <div>{error}</div>}
-      </form>
+      <>
+        <Modal
+          show={this.state.invalidCredentials}
+          modalClosed={this.handleModalClose}
+        >
+          {invalidCredentialsError}
+        </Modal>
+        <form onSubmit={this.handleSubmit}>
+          <div>
+            <StyledInput
+              type="text"
+              name="username"
+              placeholder="Username"
+              required
+              onChange={this.handleChange}
+              textAlign="center"
+            />
+          </div>
+          <div>
+            <StyledInput
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+              onChange={this.handleChange}
+            />
+          </div>
+          <StyledButton disabled={isLoading} type="submit">
+            {isLoading ? "Logging in" : "Login"}
+          </StyledButton>
+          {error && <div>{error}</div>}
+        </form>
+      </>
     );
   }
 }

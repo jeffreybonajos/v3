@@ -1,5 +1,6 @@
-import React from "react";
+import React, { Component } from "react";
 import Link from "next/link";
+import Button from "../UI/Button";
 import styled from "styled-components";
 import { logOutUser } from "../../lib/Auth";
 const StyleUL = styled.ul`
@@ -56,20 +57,73 @@ const StyledA = styled.a`
     transform: scale(1.1);
   }
 `;
+const StyledDropdown = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+const StyledDropdownContent = styled.div`
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  position: absolute;
+  width: 150px;
+  z-index: 2;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
+`;
 
-const navigationItems = props => (
-  <nav>
-    <StyleUL>
-      <StyledLI>
-        <Link href="/profile">
-          <StyledA>Profile</StyledA>
-        </Link>
-      </StyledLI>
-      <StyledLI>
-        <StyledA onClick={logOutUser}>Logout</StyledA>
-      </StyledLI>
-    </StyleUL>
-  </nav>
-);
+class NavigationItems extends Component {
+  container = React.createRef();
+  state = {
+    open: false
+  };
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+  handleClickOutside = event => {
+    if (
+      this.container.current &&
+      !this.container.current.contains(event.target)
+    ) {
+      this.setState({
+        open: false
+      });
+    }
+  };
+  render() {
+    const handlerButtonClick = () => {
+      this.setState(state => {
+        return {
+          open: !state.open
+        };
+      });
+    };
 
-export default navigationItems;
+    return (
+      <nav>
+        <StyleUL>
+          <StyledLI>
+            <StyledDropdown ref={this.container}>
+              <StyledA onClick={handlerButtonClick}>
+                {this.props.full_name}
+              </StyledA>
+              {this.state.open && (
+                <StyledDropdownContent id="myDropdown">
+                  <Link href="/home">
+                    <StyledA>Personal</StyledA>
+                  </Link>
+                  <StyledA onClick={logOutUser}>Logout</StyledA>
+                </StyledDropdownContent>
+              )}
+            </StyledDropdown>
+          </StyledLI>
+        </StyleUL>
+      </nav>
+    );
+  }
+}
+
+export default NavigationItems;

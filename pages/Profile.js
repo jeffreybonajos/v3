@@ -36,7 +36,7 @@ class Profile extends React.Component {
     }
     return (
       <div>
-        <Layout title="Profile">
+        <Layout title="Home">
           {user.map(user => (
             <h2 key={user_id}>{user.full_name}</h2>
           ))}

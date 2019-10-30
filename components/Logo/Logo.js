@@ -23,7 +23,7 @@ const StyledLogo = styled.a`
 `;
 const logo = () => (
   <StyledDiv>
-    <Link href="/home">
+    <Link href="/">
       <StyledLogo>Awesome OS</StyledLogo>
     </Link>
   </StyledDiv>

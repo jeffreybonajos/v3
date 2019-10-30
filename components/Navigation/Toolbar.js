@@ -31,7 +31,7 @@ const toolbar = props => (
         <Logo />
       </StyledLogo>
       <StyledNav>
-        <NavigationItems />
+        <NavigationItems full_name={props.full_name} />
       </StyledNav>
     </StyledToolbar>
   </header>

@@ -22,8 +22,8 @@ const Layout = ({ children, title, auth }) => {
     <>
       {title !== "Login" ? (
         <>
-          <Toolbar />
-          <SideDrawer /> <h1>{user.name}</h1>
+          <Toolbar full_name={user.name} />
+          <SideDrawer full_name={user.name} position={user.department} />
           <StyledContainer>
             <StyledContent>{children}</StyledContent>
           </StyledContainer>
