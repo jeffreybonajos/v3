@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import Link from 'next/link';
+
 import UserInfo from "./UserInfo";
 import styled from "styled-components";
 import Button from "../../UI/Button";
-import Link from "next/link";
+
 const StyledNavMenu = styled.div`
   text-align: center;
   width: 50%;
@@ -74,7 +76,7 @@ height:100%;
   padding: 0.4em 0.4em 0.4em 2em;
   *padding: 0.4em;
   margin: 0.5em 0;
-  background: #fc756f;
+  background: white;
   color: #444;
   text-decoration: none;
   transition: all 0.2s ease-in-out;
@@ -155,6 +157,31 @@ class Sidedrawer extends Component {
             <StyledNavA>Handbook</StyledNavA>
             <StyledNavA>Feedback</StyledNavA>
           </StyledOL>
+          <Button>Home</Button>
+          <StyledButton onClick={handlerButtonClick}>Personal</StyledButton>
+          {this.state.open && (
+            <StyledDropdownContent>
+              <StyledOL>
+                <StyledA>Profile</StyledA>
+                <StyledA>Payslips</StyledA>
+                <StyledA>Team</StyledA>
+                <StyledA>Infractions</StyledA>
+                <StyledA>Leave Application</StyledA>
+                <StyledA>Coaching Logs</StyledA>
+                <StyledA>Evaluation</StyledA>
+                <StyledA>Partner Discount</StyledA>
+              </StyledOL>
+            </StyledDropdownContent>
+          )}
+          <Link href="/handbook">
+            <StyledA>Handbook</StyledA>
+          </Link>
+          <Link href="/feedback">
+            <StyledA>Feedback</StyledA>
+          </Link>
+          <Link href="/feedback">
+            <StyledA>TroubleShooting</StyledA>
+          </Link>
         </StyledNavMenu>
         <StyledFooter>
           <footer>

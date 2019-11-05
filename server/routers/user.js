@@ -17,13 +17,16 @@ router.post('/api/auth/login', async (req, res) => {
       
     }
     const userProfile = await userModel.getUserProfile(user.user_id)
+    const userPosition = await userModel.getUserPosition(user.user_id)
+    const userNewsFeed = await userModel.getUserNewFeed(user.user_id)
+    const userTeamMember = await userModel.getUserTeamMember(user.user_id)
     const userData = {
       user_id: userProfile.user_id,
       name: userProfile.full_name,
       type: AUTH_USER_TYPE
     }
     res.cookie('token', userData, COOKIE_OPTIONS);
-    res.status(200).json({userData, userProfile});
+    res.status(200).json({userData, userProfile, userPosition, userNewsFeed, userTeamMember});
   } catch(error) {
     res.json(error)
   } 
@@ -36,7 +39,8 @@ router.get('/api/auth/home', async (req, res) => {
   const { token } = signedCookies;
   if(token && token.user_id){
     const userProfile = await userModel.getUserProfile(token.user_id)
-    return res.send({ user: userProfile});
+    const userPosition = await userModel.getUserPosition(token.user_id)
+    return res.json({userProfile, userPosition});
   }
   res.status(404);
 })

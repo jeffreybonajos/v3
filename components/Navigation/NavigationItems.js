@@ -1,7 +1,11 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux'
+
 import Link from "next/link";
 import styled from "styled-components";
 import { logOutUser } from "../../lib/Auth";
+import * as actions from '../../store/actions/index';
+
 const StyleUL = styled.ul`
   margin: 0;
   padding: 0;
@@ -92,6 +96,10 @@ class NavigationItems extends Component {
       });
     }
   };
+
+  handleLogout = () => { 
+    this.props.onLogout();
+  }
   render() {
     const handlerButtonClick = () => {
       this.setState(state => {
@@ -114,7 +122,7 @@ class NavigationItems extends Component {
                   <Link href="/home">
                     <StyledA>Personal</StyledA>
                   </Link>
-                  <StyledA onClick={logOutUser}>Logout</StyledA>
+                  <StyledA onClick={this.handleLogout}>Logout</StyledA>
                 </StyledDropdownContent>
               )}
             </StyledDropdown>
@@ -125,4 +133,10 @@ class NavigationItems extends Component {
   }
 }
 
-export default NavigationItems;
+const mapDispatchToProps = dispatch => {
+  return {
+    onLogout: () => dispatch(actions.logout())
+  };
+};
+
+export default connect(null, mapDispatchToProps)(NavigationItems);

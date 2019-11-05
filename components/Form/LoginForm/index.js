@@ -1,7 +1,13 @@
 import Router from "next/router";
 import { loginUser } from "../../../lib/Auth";
 import Modal from "../../UI/Modal";
+import { connect } from 'react-redux'
+
+
+import { loginUser } from "../../lib/Auth";
+import Modal from "../UI/Modal";
 import styled from "styled-components";
+import * as actions from '../../store/actions/index';
 
 const StyledInput = styled.input`
   font-family: "Roboto", sans-serif;
@@ -104,6 +110,12 @@ class LoginForm extends React.Component {
     this.setState({ isLoading: false, invalidCredentials: true });
   };
 
+  submitHandler = (event) => {
+    event.preventDefault();
+    this.props.onAuth(this.state.username, this.state.password);
+  
+  }
+
   render() {
     const { error, isLoading } = this.state;
     let invalidCredentialsError = null;
@@ -125,7 +137,7 @@ class LoginForm extends React.Component {
         >
           {invalidCredentialsError}
         </Modal>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.submitHandler}>
           <div>
             <StyledInput
               type="text"
@@ -155,4 +167,10 @@ class LoginForm extends React.Component {
   }
 }
 
-export default LoginForm;
+const mapDispatchToProps = dispatch => {
+  return {
+    onAuth: (username, password) => dispatch(actions.auth(username,password))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(LoginForm);
