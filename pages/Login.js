@@ -1,5 +1,5 @@
 import Layout from "../components/Layout";
-import LoginFrom from "../components/LoginForm";
+import LoginFrom from "../components/Form/LoginForm";
 
 import styled from "styled-components";
 

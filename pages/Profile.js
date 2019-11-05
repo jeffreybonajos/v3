@@ -38,7 +38,9 @@ class Profile extends React.Component {
       <div>
         <Layout title="Home">
           {user.map(user => (
-            <h2 key={user_id}>{user.full_name}</h2>
+            <StyledContainer>
+              <h2 key={user_id}>{user.full_name}</h2>
+            </StyledContainer>
           ))}
         </Layout>
 

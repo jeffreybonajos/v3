@@ -1,6 +1,6 @@
 import Router from "next/router";
-import { loginUser } from "../../lib/Auth";
-import Modal from "../UI/Modal";
+import { loginUser } from "../../../lib/Auth";
+import Modal from "../../UI/Modal";
 import styled from "styled-components";
 
 const StyledInput = styled.input`

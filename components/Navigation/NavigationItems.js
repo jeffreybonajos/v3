@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Link from "next/link";
-import Button from "../UI/Button";
 import styled from "styled-components";
 import { logOutUser } from "../../lib/Auth";
 const StyleUL = styled.ul`
