@@ -152,8 +152,15 @@ class Sidedrawer extends Component {
                 </StyledOL>
               </StyledDropdownContent>
             )}
-            <StyledNavA>Handbook</StyledNavA>
-            <StyledNavA>Feedback</StyledNavA>
+            <Link href="/handbook">
+              <StyledNavA>Handbook</StyledNavA>
+            </Link>
+            <Link href="/feedback">
+              <StyledNavA>Feedback</StyledNavA>
+            </Link>
+            <Link href="/troubleshooting">
+              <StyledNavA>Troubleshooting</StyledNavA>
+            </Link>
           </StyledOL>
         </StyledNavMenu>
         <StyledFooter>
