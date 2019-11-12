@@ -108,14 +108,14 @@ class NavigationItems extends Component {
         };
       });
     };
-
+    const userProfile  = ({} = this.props.userProfile || {});
     return (
       <nav>
         <StyleUL>
           <StyledLI>
             <StyledDropdown ref={this.container}>
               <StyledA onClick={handlerButtonClick}>
-                {this.props.full_name}
+                {userProfile.full_name}
               </StyledA>
               {this.state.open && (
                 <StyledDropdownContent id="myDropdown">
@@ -133,10 +133,17 @@ class NavigationItems extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    userProfile: state.auth.userProfile
+  }
+  
+}
+
 const mapDispatchToProps = dispatch => {
   return {
-    onLogout: () => dispatch(actions.logout())
+    onLogout: () => dispatch(actions.actLogout())
   };
 };
 
-export default connect(null, mapDispatchToProps)(NavigationItems);
+export default connect(mapStateToProps, mapDispatchToProps)(NavigationItems);

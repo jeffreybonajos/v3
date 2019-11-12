@@ -30,7 +30,7 @@ const StyledReminder = styled.span`
   font-style: italic;
   font-size: 10px;
 `;
-const healthTracker = props => (
+const healthTracker = ({ userHealthTrackers, userResultDocuments, userNurseVisits }) => (
   <StyledContainer>
     <StyledTable>
       <tr>
@@ -42,12 +42,14 @@ const healthTracker = props => (
         <StyledTd>Next Shot</StyledTd>
         <StyledTd>Status</StyledTd>
       </tr>
-      <tr>
-        <StyledTd>STATIC: Vaccine Name</StyledTd>
-        <StyledTd>STATIC: Date of Shot</StyledTd>
-        <StyledTd>STATIC: Next Shot</StyledTd>
-        <StyledTd>STATIC: Status</StyledTd>
+      { userHealthTrackers.map(userHealthTracker => (
+      <tr key={userHealthTracker.id}>
+        <StyledTd >{userHealthTracker.name}</StyledTd>
+        <StyledTd >{userHealthTracker.date_shot}</StyledTd>
+        <StyledTd >{userHealthTracker.date_next_shot}</StyledTd>
+        <StyledTd >{userHealthTracker.status_name}</StyledTd>
       </tr>
+      ))}
     </StyledTable>
     <StyledTable>
       <tr>
@@ -58,11 +60,14 @@ const healthTracker = props => (
         <StyledTd>Type</StyledTd>
         <StyledTd>Description</StyledTd>
       </tr>
-      <tr>
-        <StyledTd>STATIC: Date of Result</StyledTd>
-        <StyledTd>STATIC: Type</StyledTd>
-        <StyledTd>STATIC: Description</StyledTd>
-      </tr>
+      {userResultDocuments.map(userResultDocument => (
+        <tr key={userResultDocument.id}>
+          <StyledTd>{userResultDocument.result_date}</StyledTd>
+          <StyledTd>{userResultDocument.type}</StyledTd>
+          <StyledTd>{userResultDocument.description}</StyledTd>
+        </tr>
+      ))}
+        
     </StyledTable>
     <StyledTable>
       <tr>
@@ -77,17 +82,21 @@ const healthTracker = props => (
         <StyledTd>Action Taken</StyledTd>
         <StyledTd>Notes</StyledTd>
       </tr>
-      <tr>
-        <StyledTd>Static: Date</StyledTd>
-        <StyledTd>Static: Complaints</StyledTd>
-        <StyledTd>Static: Findings</StyledTd>
-        <StyledTd>Static: Intervention</StyledTd>
-        <StyledTd>Static: Nurse-In-Charge</StyledTd>
-        <StyledTd>Static: Action Taken</StyledTd>
-        <StyledTd>Static: Notes</StyledTd>
+      {userNurseVisits.map(userNurseVisit => (
+        <tr>
+        <StyledTd>{userNurseVisit.date_created.toISOString()}</StyledTd>
+        <StyledTd>{userNurseVisit.complain}</StyledTd>
+        <StyledTd>{userNurseVisit.name}</StyledTd>
+        <StyledTd>{userNurseVisit.intervention}</StyledTd>
+        <StyledTd>{userNurseVisit.full_name}</StyledTd>
+        <StyledTd>{userNurseVisit.action}</StyledTd>
+        <StyledTd>{userNurseVisit.docs_note}</StyledTd>
       </tr>
+      ))}
     </StyledTable>
   </StyledContainer>
 );
+
+
 
 export default healthTracker;

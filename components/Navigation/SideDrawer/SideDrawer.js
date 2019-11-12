@@ -1,9 +1,12 @@
 import React, { Component } from "react";
-import Link from 'next/link';
+import { connect } from 'react-redux'
 
 import UserInfo from "./UserInfo";
 import styled from "styled-components";
 import Button from "../../UI/Button";
+import Link from "next/link";
+import * as actions from '../../../store/actions/index';
+
 
 const StyledNavMenu = styled.div`
   text-align: center;
@@ -76,7 +79,7 @@ height:100%;
   padding: 0.4em 0.4em 0.4em 2em;
   *padding: 0.4em;
   margin: 0.5em 0;
-  background: white;
+  background: #fc756f;
   color: #444;
   text-decoration: none;
   transition: all 0.2s ease-in-out;
@@ -92,7 +95,6 @@ height:100%;
     transform: scale(1.1);
 `;
 const StyledNavA = styled.a`
-
 height:100%;
 position: relative;
 display: block;
@@ -117,6 +119,7 @@ class Sidedrawer extends Component {
   state = {
     open: false
   };
+
   render() {
     const handlerButtonClick = () => {
       this.setState(state => {
@@ -125,11 +128,11 @@ class Sidedrawer extends Component {
         };
       });
     };
+    const userProfile = ({} = this.props.userProfile || {});
     return (
       <StyledSideNav>
         <UserInfo
-          full_name={this.props.full_name}
-          position={this.props.position}
+          userProfile = {userProfile}
         />
         <StyledNavMenu>
           <StyledOL>
@@ -145,7 +148,9 @@ class Sidedrawer extends Component {
                     <StyledA>Profile</StyledA>
                   </Link>
                   <StyledA>Payslips</StyledA>
-                  <StyledA>Team</StyledA>
+                  <Link href="/team">
+                    <StyledA>Team</StyledA>
+                  </Link>
                   <StyledA>Infractions</StyledA>
                   <StyledA>Leave Application</StyledA>
                   <StyledA>Coaching Logs</StyledA>
@@ -157,31 +162,6 @@ class Sidedrawer extends Component {
             <StyledNavA>Handbook</StyledNavA>
             <StyledNavA>Feedback</StyledNavA>
           </StyledOL>
-          <Button>Home</Button>
-          <StyledButton onClick={handlerButtonClick}>Personal</StyledButton>
-          {this.state.open && (
-            <StyledDropdownContent>
-              <StyledOL>
-                <StyledA>Profile</StyledA>
-                <StyledA>Payslips</StyledA>
-                <StyledA>Team</StyledA>
-                <StyledA>Infractions</StyledA>
-                <StyledA>Leave Application</StyledA>
-                <StyledA>Coaching Logs</StyledA>
-                <StyledA>Evaluation</StyledA>
-                <StyledA>Partner Discount</StyledA>
-              </StyledOL>
-            </StyledDropdownContent>
-          )}
-          <Link href="/handbook">
-            <StyledA>Handbook</StyledA>
-          </Link>
-          <Link href="/feedback">
-            <StyledA>Feedback</StyledA>
-          </Link>
-          <Link href="/feedback">
-            <StyledA>TroubleShooting</StyledA>
-          </Link>
         </StyledNavMenu>
         <StyledFooter>
           <footer>
@@ -194,4 +174,12 @@ class Sidedrawer extends Component {
     );
   }
 }
-export default Sidedrawer;
+const mapStateToProps = state => {
+  return {
+    userProfile: state.auth.userProfile
+  }
+  
+}
+
+
+export default connect(mapStateToProps)(Sidedrawer);

@@ -1,3 +1,5 @@
+import { connect } from "react-redux";
+
 import Layout from "../components/Layout";
 import { authInitialProps } from "../lib/Auth";
 import Link from "next/link";
@@ -10,15 +12,26 @@ const StyledContainer = styled.div`
   height: 500px;
   text-align: center;
 `;
-export default function Index(props) {
-  const user = ({} = props.auth.user || {});
-  return (
-    <Layout title="Index" {...props}>
-      <StyledContainer>
-        <h1>{user.name}</h1>
-      </StyledContainer>
-    </Layout>
-  );
+
+class Index extends React.Component {
+  
+  render() {
+    const userData = ({} = this.props.userData || {});
+    return (
+      <Layout title="Index">
+        <StyledContainer>
+          <h1>{userData.name}</h1>
+        </StyledContainer>
+      </Layout>
+    );
+  }
 }
 
-Index.getInitialProps = authInitialProps(true);
+const mapStateToProps = state => {
+  return {
+    userProfile: state.auth.userData
+  }
+}
+
+export default connect(mapStateToProps)(Index);
+

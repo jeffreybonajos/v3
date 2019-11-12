@@ -36,7 +36,7 @@ const profile = props => (
       </tr>
       <tr>
         <StyledTd>Gender</StyledTd>
-        <StyledTd>{props.gender === "1" ? "Male" : "Female"}</StyledTd>
+        <StyledTd>{props.gender}</StyledTd>
       </tr>
       <tr>
         <StyledTd>Address</StyledTd>
@@ -49,7 +49,7 @@ const profile = props => (
       <tr>
         <StyledTd>Marital Status</StyledTd>
         <StyledTd>
-          {props.marital_status === "1" ? "Single" : "Married"}
+          {props.marital_status}
         </StyledTd>
       </tr>
     </StyledTable>
@@ -71,7 +71,7 @@ const profile = props => (
       </tr>
       <tr>
         <StyledTd>Team</StyledTd>
-        <StyledTd>STATIC: Web Dev - Internal - Shadow</StyledTd>
+        <StyledTd>{props.team_name}</StyledTd>
       </tr>
       <tr>
         <StyledTd>Position</StyledTd>
@@ -83,7 +83,7 @@ const profile = props => (
       </tr>
       <tr>
         <StyledTd>OSNet Account Type</StyledTd>
-        <StyledTd>STATIC: Team member</StyledTd>
+        <StyledTd>{props.account_type}</StyledTd>
       </tr>
       <tr>
         <StyledTd>Date Started</StyledTd>

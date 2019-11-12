@@ -17,16 +17,15 @@ router.post('/api/auth/login', async (req, res) => {
       
     }
     const userProfile = await userModel.getUserProfile(user.user_id)
-    const userPosition = await userModel.getUserPosition(user.user_id)
-    const userNewsFeed = await userModel.getUserNewFeed(user.user_id)
-    const userTeamMember = await userModel.getUserTeamMember(user.user_id)
+    const userTeamId = await userModel.getUserTeamId(user.user_id)
     const userData = {
       user_id: userProfile.user_id,
       name: userProfile.full_name,
-      type: AUTH_USER_TYPE
+      type: AUTH_USER_TYPE,
+      team_id: userTeamId.team_id
     }
     res.cookie('token', userData, COOKIE_OPTIONS);
-    res.status(200).json({userData, userProfile, userPosition, userNewsFeed, userTeamMember});
+    res.status(200).json({userData, userProfile});
   } catch(error) {
     res.json(error)
   } 
@@ -35,85 +34,42 @@ router.post('/api/auth/login', async (req, res) => {
 })
 
 router.get('/api/auth/home', async (req, res) => {
-  const { signedCookies = {} } = req;
-  const { token } = signedCookies;
-  if(token && token.user_id){
-    const userProfile = await userModel.getUserProfile(token.user_id)
-    const userPosition = await userModel.getUserPosition(token.user_id)
-    return res.json({userProfile, userPosition});
-  }
-  res.status(404);
-})
-
-router.post('/api/auth/logout', async (req, res) => {
-  res.clearCookie('token', COOKIE_OPTIONS);
-  res.sendStatus(204);
-})
-
-router.get('/api/auth/user', async (req, res) => {
-  try{
-    const user_id = req.body.user_id
-    const userProfile = await userModel.getUserProfile(user_id)
-    return res.send({ user: userProfile});
-  } catch(err){
+  try {
+    const { signedCookies = {} } = req;
+    const { token } = signedCookies;
+    if(token && token.user_id){
+      const userProfile = await userModel.getUserProfile(token.user_id)
+      const userPosition = await userModel.getUserPosition(token.user_id)
+      const userHealthTracker = await userModel.getUserHealthTracker(token.user_id)
+      const userTransactions = await userModel.getUserTransactions(token.user_id)
+      const userResultDocument = await userModel.getResultDocuments(token.user_id)
+      const userNurseVisit = await userModel.getNurseVisit(token.user_id)
+      res.json({userProfile, userPosition, userHealthTracker, userTransactions, userResultDocument, userNurseVisit});
+      }
+  } catch(error) {
     res.status(404);
   }
+  
 })
+
+router.get('/api/auth/team', async (req, res) => {
+  try {
+    const { signedCookies = {} } = req;
+    const { token } = signedCookies;
+    if(token && token.user_id){
+      const userTeamMembers = await userModel.getUserTeamMembers(token.team_id)
+      res.json({userTeamMembers});
+      }
+  } catch(error) {
+    res.status(404);
+  }
+  
+})
+
 
 router.post('/api/auth/logout', async (req, res) => {
   res.clearCookie('token', COOKIE_OPTIONS);
   res.sendStatus(204);
 })
-
-
-
-
-// router.post('/api/auth/login', async (req, res) => {
-//   try {
-//     const { user } = await userModel.findByCredentials(req.body.username, req.body.password)
-//     if(!user){
-//       res.status(500).send()
-//     }
-//     // const {token} = jwt.sign({ user_id: user.user_id.toString() }, 'awesomeversionthree')
-//     // const {userfullInfo} = await userModel.getUserProfile(user.user_id)
-//     // const cookieOption = {
-//     //   httpOnly: true,
-//     //   expires: 0
-//     // }
-//     // res.cookie('token', token, cookieOption)
-//     res.send({user})
-//   } catch(e){
-//     res.status(400).send(e)
-//   }
-// })
-
-// router.get('/api/home', async (req, res) => {
-//   try {
-//         const token = req.body.token || req.query.token || req.header('Authorization').replace('Bearer', '') || req.header.cookies
-//         const decoded = jwt.verify(token, 'awesomeversionthree')
-//         const user = await userModel.getUserProfile(decoded.user_id)
-
-//         if(!user) {
-//             throw new Error ('error auth')
-//         }
-//         req.user = user
-//         res.send({user: req.user})
-//     } catch(e) {
-//         res.status(403).send(e)
-//     }
-// }) 
-
-// router.post('/api/logout', authMiddleware, async (req, res) => {
-//   try {
-//     req.token = []
-//     await req.user.save()
-//     res.send()
-//   } catch(e) {
-//     res.status(500).send()
-//   }
-// })
-
-
-
 
 module.exports = router;

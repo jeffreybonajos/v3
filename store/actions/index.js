@@ -1,8 +1,9 @@
 export {
     auth,
-    logout
+    actLogout
 } from './auth';
 
 export {
-    getUserData
+    getUserData,
+    getUserTeam
 } from './users';

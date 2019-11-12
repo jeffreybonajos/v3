@@ -13,11 +13,11 @@ export const authStart = () => {
         type: AUTH_START
     };
 };
-export const authSuccess = (token, user) => {
+export const authSuccess = (token, userProfile) => {
     return {
         type: AUTH_SUCCESS,
         userData: token,
-        userProfile: user
+        userProfile: userProfile
     };
 };
 export const authFail = (error) => {
@@ -32,6 +32,20 @@ export const logout = () => {
         type: AUTH_LOGOUT
     }
 }
+
+export const actLogout = () => {
+    return async dispatch => {
+        const response = await fetch('/api/auth/logout', {
+            method: 'POST',
+            credentials: 'same-origin',
+        })
+        if(response.ok){
+            dispatch(logout());
+            Router.push('/login');
+        }
+    }
+}
+const WINDOW_USER_SCRIPT_VARIABLE = '__USER__';
 
 export const auth = (username, password) => {
     return async dispatch => {
@@ -51,8 +65,10 @@ export const auth = (username, password) => {
         })
         if(response.ok){
             const res = await response.json();
-            console.log(res)
             dispatch(authSuccess(res.userData, res.userProfile))
+            if(typeof window !== 'undefined'){
+                window[WINDOW_USER_SCRIPT_VARIABLE] = res.userData || {} ;
+            }
             Router.push("/");
         }else {
             dispatch(authFail(response.error))

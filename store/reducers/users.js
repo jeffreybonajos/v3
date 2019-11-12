@@ -1,10 +1,16 @@
 import {
-    FECTH_USER_DATA
+    FECTH_USER_DATA,
+    FETCH_USER_TEAM
 } from '../actions/actionTypes';
 
 const initialState = {
     userProfile: null,
     userPosition: null,
+    userHealthTracker: null,
+    userTeamMembers: [],
+    userTransactions: [],
+    userResultDocument: [],
+    userNurseVisit: [],
     error: null,
     isLoading: false
 }
@@ -16,17 +22,28 @@ export const updateObject = (oldObject, updatedProperties) => {
 };
 
 
-export const getUserData = (state, action) => {
+export const fetchUserData = (state, action) => {
     return updateObject(state, {
         userProfile: action.userProfile,
-        userPosition: action.userPosition
-    })
+        userPosition: action.userPosition,
+        userHealthTracker: action.userHealthTracker,
+        userTransactions: action.userTransactions,
+        userResultDocument: action.userResultDocument,
+        userNurseVisit: action.userNurseVisit
+    });
+}
+
+export const fetchUserTeam = (state, action) => {
+    return updateObject(state, {
+        userTeamMembers: action.userTeamMembers
+    });
 }
 
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case FECTH_USER_DATA: return getUserData(state, action);
+        case FECTH_USER_DATA: return fetchUserData(state, action);
+        case FETCH_USER_TEAM: return fetchUserTeam(state, action);
         default:
             return state;
     }

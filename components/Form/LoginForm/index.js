@@ -1,13 +1,11 @@
 import Router from "next/router";
-import { loginUser } from "../../../lib/Auth";
-import Modal from "../../UI/Modal";
 import { connect } from 'react-redux'
 
 
-import { loginUser } from "../../lib/Auth";
-import Modal from "../UI/Modal";
+import { loginUser } from "../../../lib/Auth";
+import Modal from "../../UI/Modal";
 import styled from "styled-components";
-import * as actions from '../../store/actions/index';
+import * as actions from '../../../store/actions/index';
 
 const StyledInput = styled.input`
   font-family: "Roboto", sans-serif;
@@ -167,10 +165,17 @@ class LoginForm extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    isLoading: state.auth.isLoading,
+    
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
     onAuth: (username, password) => dispatch(actions.auth(username,password))
   };
 };
 
-export default connect(null, mapDispatchToProps)(LoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

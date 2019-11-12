@@ -46,8 +46,9 @@ const StyledDiv = styled.div`
 
 class LoginForm extends React.Component {
   state = {
-    username: "",
-    password: "",
+    current_password: "",
+    new_password: "",
+    confirm_new_password: "",
     error: "",
     isLoading: false,
     invalidCredentials: false
@@ -56,11 +57,17 @@ class LoginForm extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  submitHandler = (event) => {
+    event.preventDefault();
+    console.log(this.state);
+  
+  }
+
   render() {
     return (
       <StyledDiv>
         <h2>Change Password</h2>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.submitHandler}>
           <div>
             <StyledTitle>Current Password</StyledTitle>
             <br />

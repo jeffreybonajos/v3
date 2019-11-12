@@ -32,7 +32,7 @@ const StyledImg = styled.img`
     transform: scale(1.1);
   }
 `;
-const relatedEmployees = () => (
+const relatedEmployees = props => (
   <StyledContainer>
     <StyledHeader>
       <span>Related Employees</span>

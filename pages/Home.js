@@ -1,12 +1,17 @@
+import { connect } from "react-redux";
+
 import Layout from "../components/Layout";
 import { getUserHome, authInitialProps } from "../lib/Auth";
 import RelatedEmployees from "../components/PersonalComponent/RelatedEmployees";
 import Profile from "../components/PersonalComponent/Profile";
+import TransactionHistory from "../components/PersonalComponent/TransactionHistory";
 import Account from "../components/PersonalComponent/ChangePasswordForm";
 import HealthTracker from "../components/PersonalComponent/HealthTracker";
 import Payroll from "../components/PersonalComponent/Payroll";
 import QrCode from "../components/PersonalComponent/QRCode";
 import styled from "styled-components";
+import * as actions from '../store/actions/index';
+
 
 const StyledWrapper = styled.div`
   font-family: "Raleway", sans-serif;
@@ -51,7 +56,7 @@ const StyledButton = styled.button`
 const StyledContent = styled.div`
   clear: both;
   float: left;
-  width: 75%;
+  width: 100%;
   background: white;
   margin-bottom: 30px;
 `;
@@ -63,31 +68,37 @@ const StyledCheat = styled.div`
 const StyledComponent = styled.div`
   padding-bottom: 20px;
 `;
-export default class Home extends React.Component {
+class Home extends React.Component {
   state = {
-    user: [],
     componentOpen: "profile"
   };
-
+  
   componentDidMount() {
-    getUserHome().then(user => this.setState(user));
+    this.props.onFetchUserData();
   }
   componentDidUpdate() {
     console.log(this.state.componentOpen);
   }
   render() {
-    const { user } = this.state;
+    const userProfile = ({} = this.props.userProfile || {});
+    const userPosition = ({} = this.props.userPosition || {});
+    const userHealthTrackers = ({} = this.props.userHealthTracker || {});
+    const userTransactions = ({} = this.props.userTransactions || {});
+    const userResultDocuments = ({} = this.props.userResultDocument || {});
+    const userNurseVisits = ({} = this.props.userNurseVisit || {});
+
+    console.log('home', userPosition)
     return (
-      <Layout title="Home" {...this.props}>
+      <Layout title="Home">
         <StyledWrapper>
           <StyledContainer>
             <StyledHeader>
               <StyledImg src="/static/default-profile.png" alt="Profile" />
               <StyledHeaderContent>
                 <h2>
-                  {user.first_name} {user.last_name}
+                  {userProfile.first_name} {userProfile.last_name}
                 </h2>
-                <h3>{user.department}</h3>
+                <h3>{userProfile.department}</h3>
               </StyledHeaderContent>
             </StyledHeader>
             <StyledContent>
@@ -97,6 +108,13 @@ export default class Home extends React.Component {
                 }}
               >
                 Profile
+              </StyledButton>
+              <StyledButton
+                onClick={() => {
+                  this.setState({ componentOpen: "transaction_history" });
+                }}
+              >
+                Transaction History
               </StyledButton>
               <StyledButton
                 onClick={() => {
@@ -136,41 +154,70 @@ export default class Home extends React.Component {
               <StyledComponent>
                 {this.state.componentOpen === "profile" ? (
                   <Profile
-                    full_name={user.full_name}
-                    gender={user.gender}
-                    address={user.registered_address}
-                    blood_type={user.blood_type}
-                    marital_status={user.marital_status}
-                    email={user.email}
-                    branch_site={user.branch_site}
-                    department={user.department}
-                    position={user.position}
-                    status={user.status}
-                    date_started={user.date_started}
-                    hdmf={user.hdmf}
-                    phic={user.phic}
-                    sss={user.sss}
-                    tin={user.tin}
+                    full_name={userProfile.full_name}
+                    gender={userProfile.gender_type}
+                    address={userProfile.registered_address}
+                    blood_type={userProfile.blood_type}
+                    marital_status={userProfile.marital_status}
+                    email={userProfile.email}
+                    branch_site={userProfile.branch}
+                    department={userProfile.department}
+                    team_name={userProfile.team_name}
+                    position={userPosition.position}
+                    status={userProfile.status}
+                    account_type={userProfile.role_type}
+                    date_started={userProfile.date_started}
+                    hdmf={userProfile.hdmf}
+                    phic={userProfile.phic}
+                    sss={userProfile.sss}
+                    tin={userProfile.tin}
+                  />
+                  
+                ) : this.state.componentOpen === "transaction_history" ? (
+                  <TransactionHistory 
+                  userTransactions={userTransactions}
                   />
                 ) : this.state.componentOpen === "account" ? (
                   <Account />
                 ) : this.state.componentOpen === "payroll" ? (
                   <Payroll />
                 ) : this.state.componentOpen === "health_tracker" ? (
-                  <HealthTracker />
+                  <HealthTracker 
+                  userHealthTrackers={userHealthTrackers}
+                  userResultDocuments = {userResultDocuments}
+                  userNurseVisits = {userNurseVisits}
+                  />
                 ) : this.state.componentOpen === "qr_code" ? (
                   <QrCode />
                 ) : null}
               </StyledComponent>
             </StyledContent>
-            <RelatedEmployees />
             <StyledCheat />
-
-            <h3>{/*user.registered_address*/}</h3>
           </StyledContainer>
         </StyledWrapper>
       </Layout>
     );
   }
 }
-Home.getInitialProps = authInitialProps(true);
+
+
+const mapStateToProps = state => {
+  return {
+    userProfile: state.user.userProfile,
+    userPosition: state.user.userPosition,
+    userHealthTracker: state.user.userHealthTracker,
+    userTransactions: state.user.userTransactions,
+    userResultDocument: state.user.userResultDocument,
+    userNurseVisit: state.user.userNurseVisit
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onFetchUserData: () => { dispatch(actions.getUserData())}
+  }
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

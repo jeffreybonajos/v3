@@ -8,7 +8,7 @@ import {
 
 const initialState = {
     token: null,
-    user: null,
+    userProfile: null,
     error: null,
     isLoading: false
 }
@@ -27,7 +27,7 @@ export const authStart = (state, action) => {
 export const authSuccess = (state, action) => {
     return updateObject(state, {
         token: action.userData,
-        user: action.userProfile,
+        userProfile: action.userProfile,
         error: null,
         isLoading: false
     });

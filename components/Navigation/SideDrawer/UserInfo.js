@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { connect } from 'react-redux';
+
+
 import { logOutUser } from "../../../lib/Auth";
+import * as actions from '../../../store/actions/index';
 const StyledInfo = styled.div`
   text-align: center;
   padding: 10px;
@@ -35,20 +39,23 @@ const StyledLogout = styled.div`
 const StyledLogoutIcon = styled.img`
   width: 7%;
 `;
-const userinfo = props => (
+
+
+const userinfo = ({userProfile}) => (
   <StyledDiv>
     <center>
       <StyledImg src="/static/default-profile.png" alt="Profile" />
     </center>
     <StyledInfo>
-      <span>{props.full_name}</span>
+      <span>{userProfile.full_name}</span>
       <br />
-      <span>{props.position}</span>
+      <span>{userProfile.position}</span>
     </StyledInfo>
     <StyledLogout onClick={logOutUser}>
       <StyledLogoutIcon src="/static/logout.png" alt="Logout" /> Logout
     </StyledLogout>
   </StyledDiv>
 );
+
 
 export default userinfo;

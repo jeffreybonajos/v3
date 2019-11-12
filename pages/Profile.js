@@ -13,17 +13,16 @@ const StyledContainer = styled.div`
 `;
 
 class Profile extends React.Component {
-    componentDidMount() {
-      this.props.onFetchUserData(this.props.token);
-    }
-
+    
+  componentDidMount() {
+    this.props.onFetchUserData();
+  }
   render() {
-    console.log(this.props.users)
-    const users = this.props.users;
+    const user = this.props
+    console.log('profile',user)
     return (
       <div>
         <Layout title="Home">
-
         </Layout>
       </div>
     );
@@ -32,14 +31,14 @@ class Profile extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    token: state.auth.token,
-    users: state.user.userProfile
+    userProfile: state.user.userProfile,
+    userPosition: state.user.userPosition
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchUserData: (token) => { dispatch(actions.getUserData(token))}
+    onFetchUserData: () => { dispatch(actions.getUserData())}
   }
 }
 
