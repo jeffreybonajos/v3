@@ -8,22 +8,19 @@ import Link from "next/link";
 import * as actions from '../../../store/actions/index';
 
 
-const StyledNavMenu = styled.div`
-  text-align: center;
-  width: 50%;
-`;
+
 const StyledFooter = styled.div`
-  text-align: center;
-  width: 70%;
-  background-color: gray;
-  padding: 15px;
-  margin-bottom: 120px;
+    margin-top: 20px;
+    background: white;
+    padding: 15px 25px;
+    font-size: 9pt;
+    box-shadow: 2px 1px 15px -1px rgba(0, 0, 0, .08);
+    color: darkgray;
 `;
 const StyledSideNav = styled.div`
   height: 100vh;
   font-family: "Raleway", sans-serif;
-  margin-top: 56px;
-  width: 20%;
+  margin-top: 86px;
   position: fixed;
   list-style: none;
   display: flex;
@@ -35,18 +32,18 @@ const StyledSideNav = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   margin-bottom: 100px;
-  background: white;
+  background: #f2f2f2;
+  width: 14%;
+  margin-left: 80px;
 `;
 const StyledDropdownContent = styled.div`
   color: black;
   padding: 0px 16px;
   text-decoration: none;
-  width: 100px;
   right: 0;
   margin: auto;
 `;
 const StyledButton = styled.button`
-  width: 100%;
   border: none;
   color: black;
   outline: none;
@@ -65,21 +62,36 @@ const StyledButton = styled.button`
     transform: scale(1.1);
   }
 `;
-const StyledOL = styled.ol`
+
+const StyledNavMenu = styled.div`
+  text-align: left;
+  background-color: #fff;
+  width: 100%;
+`;
+
+const MainNavList = styled.ol`
   list-style: decimal;
   font-size: 12px;
   font-family: "Raleway", sans-serif;
   padding: 0;
+  margin: 0;
   width: 100%;
 `;
-const StyledA = styled.a`
+
+const SubNav = styled.ol`
+  list-style: decimal;
+  font-size: 12px;
+  font-family: "Raleway", sans-serif;
+  padding: 0;
+`;
+
+const PersonalNav = styled.a`
 height:100%;
   position: relative;
   display: block;
   padding: 0.4em 0.4em 0.4em 2em;
   *padding: 0.4em;
   margin: 0.5em 0;
-  background: #fc756f;
   color: #444;
   text-decoration: none;
   transition: all 0.2s ease-in-out;
@@ -92,19 +104,20 @@ height:100%;
   &:hover,
   &:active,
   &:focus {
-    transform: scale(1.1);
+    color: red !important;
+    margin-left: -3px;
 `;
-const StyledNavA = styled.a`
+const MainNavLinks = styled.a`
 height:100%;
 position: relative;
 display: block;
 padding:12px;
 background: white;
-color: black;
+color: dimgrey;
 font-size: 14px;
 text-decoration: none;
 transition: all 0.2s ease-in-out;
-text-align: center;
+text-align: left;
 -webkit-transition: all 0.3 ease;
 transition: all 0.3 ease;
 cursor: pointer;
@@ -113,8 +126,13 @@ transition-duration: 0.1s;
 &:hover,
 &:active,
 &:focus {
-  transform: scale(1.1);
+  border-left: 3px solid red;
+    background: #f2f2f2;
+    box-shadow: inset 2px 0px 10px -5px rgba(0, 0, 0, 0.8);
+    color: red;
+  }
 `;
+
 class Sidedrawer extends Component {
   state = {
     open: false
@@ -135,33 +153,33 @@ class Sidedrawer extends Component {
           userProfile = {userProfile}
         />
         <StyledNavMenu>
-          <StyledOL>
+          <MainNavList>
             <Link href="/">
-              <StyledNavA>Home</StyledNavA>
+              <MainNavLinks><i class="fa fa-home"></i>&emsp;Home</MainNavLinks>
             </Link>
-
-            <StyledNavA onClick={handlerButtonClick}>Personal</StyledNavA>
+            <MainNavLinks onClick={handlerButtonClick}><i class="fa fa-user"></i>&emsp;Personal</MainNavLinks>
             {this.state.open && (
               <StyledDropdownContent>
-                <StyledOL>
+                <SubNav>
                   <Link href="/home">
-                    <StyledA>Profile</StyledA>
+                    <PersonalNav><i class="fa fa-circle-o"></i>&nbsp;&nbsp;Profile</PersonalNav>
                   </Link>
-                  <StyledA>Payslips</StyledA>
+                  <PersonalNav><i class="fa fa-circle-o"></i>&nbsp;&nbsp;Payslips</PersonalNav>
                   <Link href="/team">
-                    <StyledA>Team</StyledA>
+                    <PersonalNav><i class="fa fa-circle-o"></i>&nbsp;&nbsp;Team</PersonalNav>
                   </Link>
-                  <StyledA>Infractions</StyledA>
-                  <StyledA>Leave Application</StyledA>
-                  <StyledA>Coaching Logs</StyledA>
-                  <StyledA>Evaluation</StyledA>
-                  <StyledA>Partner Discount</StyledA>
-                </StyledOL>
+                  <PersonalNav><i class="fa fa-circle-o"></i>&nbsp;&nbsp;Infractions</PersonalNav>
+                  <PersonalNav><i class="fa fa-circle-o"></i>&nbsp;&nbsp;Leave Application</PersonalNav>
+                  <PersonalNav><i class="fa fa-circle-o"></i>&nbsp;&nbsp;Coaching Logs</PersonalNav>
+                  <PersonalNav><i class="fa fa-circle-o"></i>&nbsp;&nbsp;Evaluation</PersonalNav>
+                  <PersonalNav><i class="fa fa-circle-o"></i>&nbsp;&nbsp;Partner Discount</PersonalNav>
+                </SubNav>
               </StyledDropdownContent>
             )}
-            <StyledNavA>Handbook</StyledNavA>
-            <StyledNavA>Feedback</StyledNavA>
-          </StyledOL>
+            <MainNavLinks><i class="fa fa-book"></i>&emsp;Handbook</MainNavLinks>
+            <MainNavLinks><i class="fa fa-commenting"></i>&emsp;Feedback</MainNavLinks>
+            <MainNavLinks><i class="fa fa-wrench"></i>&emsp;Troubleshooting</MainNavLinks>
+          </MainNavList>
         </StyledNavMenu>
         <StyledFooter>
           <footer>

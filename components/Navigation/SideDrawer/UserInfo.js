@@ -8,12 +8,20 @@ import * as actions from '../../../store/actions/index';
 const StyledInfo = styled.div`
   text-align: center;
   padding: 10px;
+  background-color: #ff8533;
+  color: #fff;
 `;
 const StyledDiv = styled.div`
-  width: 80%;
-
-  background-color: #ff8533;
+  width: 100%;
 `;
+
+const ImgContainer = styled.div`
+  background-color: #fff;
+  height: 230px;
+  width: 100%;
+  text-align: center;
+`;
+
 const StyledImg = styled.img`
   padding-top: 10px;
   margin-left: auto;
@@ -43,17 +51,17 @@ const StyledLogoutIcon = styled.img`
 
 const userinfo = ({userProfile}) => (
   <StyledDiv>
-    <center>
-      <StyledImg src="/static/default-profile.png" alt="Profile" />
-    </center>
+      <ImgContainer>
+        <StyledImg src="/static/default-profile.png" alt="Profile" />
+      </ImgContainer>
     <StyledInfo>
       <span>{userProfile.full_name}</span>
       <br />
       <span>{userProfile.position}</span>
-    </StyledInfo>
     <StyledLogout onClick={logOutUser}>
       <StyledLogoutIcon src="/static/logout.png" alt="Logout" /> Logout
     </StyledLogout>
+    </StyledInfo>
   </StyledDiv>
 );
 

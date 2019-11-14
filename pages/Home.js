@@ -56,7 +56,7 @@ const StyledButton = styled.button`
 const StyledContent = styled.div`
   clear: both;
   float: left;
-  width: 100%;
+  width: 68%;
   background: white;
   margin-bottom: 30px;
 `;
