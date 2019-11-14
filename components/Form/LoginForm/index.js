@@ -8,11 +8,13 @@ import styled from "styled-components";
 import * as actions from '../../../store/actions/index';
 
 const StyledInput = styled.input`
-  font-family: "Roboto", sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
   outline: 0;
-  background: #f2f2f2;
-  width: 50%;
-  border: 0;
+  background: rgba(255,255,255,0.2);
+  width: 92%;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 9px;
   margin: 0 0 15px;
   padding: 15px;
   box-sizing: border-box;
@@ -25,14 +27,20 @@ const StyledInput = styled.input`
   &:focus {
     transform: scale(1.1);
   }
+  &::placeholder,
+  &::-webkit-input-placeholder {
+    color: rgba(255,255,255,0.7);
+  }
 `;
 const StyledButton = styled.button`
-  font-family: "Roboto", sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
   text-transform: uppercase;
   outline: 0;
   background: white;
-  width: 50%;
+  width: 92%;
   border: 0;
+  border-radius: 9px;
   padding: 15px;
   color: #fd8949;
   font-size: 14px;
@@ -74,8 +82,28 @@ const StyledErrorButton = styled.button`
   }
 `;
 const StyledErrorMsg = styled.h1`
-  font-family: "Roboto", sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
 `;
+
+const RedirectMsg = styled.span`
+  font-family: 'Source Sans Pro', sans-serif;
+  color: #FFFCCC;
+  font-size: 11px;
+`;
+
+const CopyrightMsg = styled.span`
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+  color: #fff;
+  font-size: 18px;
+`;
+
+const BestViewMsg = styled.span`
+  font-family: 'Source Sans Pro', sans-serif;
+  color: #676767;
+  font-size: 13px;
+`;
+
 class LoginForm extends React.Component {
   state = {
     username: "",
@@ -111,7 +139,7 @@ class LoginForm extends React.Component {
   submitHandler = (event) => {
     event.preventDefault();
     this.props.onAuth(this.state.username, this.state.password);
-  
+
   }
 
   render() {
@@ -160,6 +188,10 @@ class LoginForm extends React.Component {
           </StyledButton>
           {error && <div>{error}</div>}
         </form>
+        <RedirectMsg>After login you will be redirected to https://awesomeos.org/</RedirectMsg><br /><br /><br />
+        <CopyrightMsg>© 2019 OSNet. All Rights Reserved.</CopyrightMsg><br />
+        <BestViewMsg>This site is best viewed in Chrome, Firefox or Safari.<br />
+          Make sure JavaScript is always enabled.</BestViewMsg>
       </>
     );
   }
@@ -168,13 +200,13 @@ class LoginForm extends React.Component {
 const mapStateToProps = state => {
   return {
     isLoading: state.auth.isLoading,
-    
+
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: (username, password) => dispatch(actions.auth(username,password))
+    onAuth: (username, password) => dispatch(actions.auth(username, password))
   };
 };
 

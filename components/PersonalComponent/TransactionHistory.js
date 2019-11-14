@@ -35,9 +35,10 @@ const TransactionHistory = ({ userTransactions }) => (
     <StyledTable>
       { userTransactions.map(userTransaction => (
       <tr key={userTransaction.id}>
-        <StyledTd >We would like to inform you that an amount of {userTransaction.amount} has been credited to your account as tax refund.</StyledTd>
-        <StyledTd >{userTransaction.date_read}</StyledTd>
-        <StyledTd >{userTransaction.date_created}</StyledTd>
+        <StyledTd >
+          We would like to inform you that an amount of {userTransaction.amount} has been credited to your account as tax refund.
+          <br/><br/><br/>{userTransaction.date_read}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;{userTransaction.date_created}
+        </StyledTd>
       </tr>
       ))}
     </StyledTable>

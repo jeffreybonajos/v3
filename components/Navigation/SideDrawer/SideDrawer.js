@@ -150,35 +150,35 @@ class Sidedrawer extends Component {
     return (
       <StyledSideNav>
         <UserInfo
-          userProfile = {userProfile}
+          userProfile={userProfile}
         />
         <StyledNavMenu>
           <MainNavList>
             <Link href="/">
-              <MainNavLinks><i class="fa fa-home"></i>&emsp;Home</MainNavLinks>
+              <MainNavLinks><i className="fa fa-home"></i>&emsp;Home</MainNavLinks>
             </Link>
-            <MainNavLinks onClick={handlerButtonClick}><i class="fa fa-user"></i>&emsp;Personal</MainNavLinks>
+            <MainNavLinks onClick={handlerButtonClick}><i className="fa fa-user"></i>&emsp;Personal</MainNavLinks>
             {this.state.open && (
               <StyledDropdownContent>
                 <SubNav>
                   <Link href="/home">
-                    <PersonalNav><i class="fa fa-circle-o"></i>&nbsp;&nbsp;Profile</PersonalNav>
+                    <PersonalNav><i className="fa fa-circle-o"></i>&nbsp;&nbsp;Profile</PersonalNav>
                   </Link>
-                  <PersonalNav><i class="fa fa-circle-o"></i>&nbsp;&nbsp;Payslips</PersonalNav>
+                  <PersonalNav><i className="fa fa-circle-o"></i>&nbsp;&nbsp;Payslips</PersonalNav>
                   <Link href="/team">
-                    <PersonalNav><i class="fa fa-circle-o"></i>&nbsp;&nbsp;Team</PersonalNav>
+                    <PersonalNav><i className="fa fa-circle-o"></i>&nbsp;&nbsp;Team</PersonalNav>
                   </Link>
-                  <PersonalNav><i class="fa fa-circle-o"></i>&nbsp;&nbsp;Infractions</PersonalNav>
-                  <PersonalNav><i class="fa fa-circle-o"></i>&nbsp;&nbsp;Leave Application</PersonalNav>
-                  <PersonalNav><i class="fa fa-circle-o"></i>&nbsp;&nbsp;Coaching Logs</PersonalNav>
-                  <PersonalNav><i class="fa fa-circle-o"></i>&nbsp;&nbsp;Evaluation</PersonalNav>
-                  <PersonalNav><i class="fa fa-circle-o"></i>&nbsp;&nbsp;Partner Discount</PersonalNav>
+                  <PersonalNav><i className="fa fa-circle-o"></i>&nbsp;&nbsp;Infractions</PersonalNav>
+                  <PersonalNav><i className="fa fa-circle-o"></i>&nbsp;&nbsp;Leave Application</PersonalNav>
+                  <PersonalNav><i className="fa fa-circle-o"></i>&nbsp;&nbsp;Coaching Logs</PersonalNav>
+                  <PersonalNav><i className="fa fa-circle-o"></i>&nbsp;&nbsp;Evaluation</PersonalNav>
+                  <PersonalNav><i className="fa fa-circle-o"></i>&nbsp;&nbsp;Partner Discount</PersonalNav>
                 </SubNav>
               </StyledDropdownContent>
             )}
-            <MainNavLinks><i class="fa fa-book"></i>&emsp;Handbook</MainNavLinks>
-            <MainNavLinks><i class="fa fa-commenting"></i>&emsp;Feedback</MainNavLinks>
-            <MainNavLinks><i class="fa fa-wrench"></i>&emsp;Troubleshooting</MainNavLinks>
+            <MainNavLinks><i className="fa fa-book"></i>&emsp;Handbook</MainNavLinks>
+            <MainNavLinks><i className="fa fa-commenting"></i>&emsp;Feedback</MainNavLinks>
+            <MainNavLinks><i className="fa fa-wrench"></i>&emsp;Troubleshooting</MainNavLinks>
           </MainNavList>
         </StyledNavMenu>
         <StyledFooter>
@@ -196,7 +196,7 @@ const mapStateToProps = state => {
   return {
     userProfile: state.auth.userProfile
   }
-  
+
 }
 
 

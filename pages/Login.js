@@ -2,25 +2,26 @@ import Layout from "../components/Layout";
 import LoginFrom from "../components/Form/LoginForm";
 
 import styled from "styled-components";
+// import bgLogin from "../static/bg-login.png";
 
 const StyledWrapper = styled.div`
-  background: linear-gradient(
-    to bottom right,
-    rgb(255, 249, 165) 0%,
-    rgb(255, 97, 35) 100%
-  );
+  background-image: url("../static/bg-login.png");
+  background-size: cover;
+  background-position: center;
   position: absolute;
   left: 0;
+  top: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
 `;
 const StyledLoginContainer = styled.div`
   max-width: 600px;
-  margin: 0 auto;
-  padding: 80px 0;
   height: 400px;
   text-align: center;
+  position: absolute;
+  right: 250px;
+  top: 24%;
 `;
 const MainTitle = styled.h1`
   font-size: 50px;
