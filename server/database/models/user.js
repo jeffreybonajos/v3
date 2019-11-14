@@ -113,6 +113,73 @@ userModelAndConnection.getUserTransactions = (user_id) => {
   })
 }
 
+userModelAndConnection.getUserSchedule = (user_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT team_scheduler.* from team_scheduler INNER JOIN team_member ON team_scheduler.team_id = team_member.team_id WHERE team_member.user_id = ? AND team_member.active = 1 ', [user_id], function (error, result, fields) {
+      if(error){
+        return reject(error)
+      }
+      return resolve(result[0])
+    })
+  })
+}
+
+userModelAndConnection.getUserSalaryDetails = (user_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT employee_salary_details.* , user_information.full_name, user_information.pag_ibig, user_status.status, (SELECT COUNT(*) FROM employee_salary_detail_history  WHERE employee_salary_detail_history.employee_id = employee_salary_details.employee_id) FROM employee_salary_details INNER JOIN user_information ON user_information.user_id = employee_salary_details.employee_id INNER JOIN user_status ON user_information.status = user_status.status_id WHERE employee_salary_details.employee_id = ? ', [user_id], function (error, result, fields) {
+      if(error){
+        return reject(error)
+      }
+      return resolve(result[0])
+    })
+  })
+}
+
+userModelAndConnection.getUserIncentives = (user_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT incentive_recipient.* FROM incentive_recipient INNER JOIN incentive ON incentive_recipient.incentive_id = incentive.id WHERE incentive_recipient.granted = 1 AND incentive_recipient.employee_id = ?', [user_id], function (error, result, fields) {
+      if(error){
+        return reject(error)
+      }
+      return resolve(result[0])
+    })
+  })
+}
+
+userModelAndConnection.getUserHMOplan = (user_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT eh.*, h_g.hmo_plan, h_g.hmo_monthly, h_s.hmo_plan, h_s.hmo_monthly FROM employee_hmo AS eh INNER JOIN hmo AS h_g ON eh.hmo_id = h_g.hmo_id INNER JOIN hmo AS h_s ON eh.selected_hmo_id = h_s.hmo_id WHERE eh.user_id = ?', [user_id], function (error, result, fields) {
+      if(error){
+        return reject(error)
+      }
+      return resolve(result[0])
+    })
+  })
+}
+
+userModelAndConnection.getUserHMOdependent = (user_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT employee_dependent.*, hmo.hmo_plan, hmo.hmo_monthly FROM employee_dependent_hmo INNER JOIN hmo ON employee_dependent_hmo.hmo_id = hmo.hmo_id INNER JOIN employee_dependent ON employee_dependent.dependent_id = employee_dependent_hmo.dependent_id WHERE employee_dependent.user_id = ?', [user_id], function (error, result, fields) {
+      if(error){
+        return reject(error)
+      }
+      return resolve(result)
+    })
+  })
+}
+
+userModelAndConnection.getUserLoans = (user_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT loan.*, loan_type.loan_type_name FROM loan INNER JOIN loan_type ON loan.loan_type_id = loan_type.loan_type_id WHERE loan.employee_id = ? AND loan.paid = 0 AND loan.date_cancelled IS NULL AND loan.terms_to_pay > loan.current_term ', [user_id], function (error, result, fields) {
+      if(error){
+        return reject(error)
+      }
+      return resolve(result)
+    })
+  })
+}
+
+
 
 
 
