@@ -11,6 +11,12 @@ const initialState = {
     userTransactions: [],
     userResultDocument: [],
     userNurseVisit: [],
+    userSchedule: null,
+    userSalaryDetails: null,
+    userIncentives: null,
+    userHMOplan: null,
+    userHMOdependent: [],
+    userLoans: [],
     error: null,
     isLoading: false
 }
@@ -29,7 +35,13 @@ export const fetchUserData = (state, action) => {
         userHealthTracker: action.userHealthTracker,
         userTransactions: action.userTransactions,
         userResultDocument: action.userResultDocument,
-        userNurseVisit: action.userNurseVisit
+        userNurseVisit: action.userNurseVisit,
+        userSchedule: action.userSchedule,
+        userSalaryDetails: action.userSalaryDetails,
+        userIncentives: action.userIncentives,
+        userHMOplan: action.userHMOplan,
+        userHMOdependent: action.userHMOdependent,
+        userLoans: action.userLoans
     });
 }
 

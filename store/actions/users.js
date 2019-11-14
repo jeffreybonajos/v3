@@ -4,7 +4,11 @@ import {
 } from './actionTypes';
 
 
-export const fetchUserData = (userProfile, userPosition, userHealthTracker, userTransactions, userResultDocument, userNurseVisit) => {
+export const fetchUserData = (userProfile, userPosition, userHealthTracker, userTransactions, userResultDocument, userNurseVisit, userSchedule, userSalaryDetails, userIncentives,
+    userHMOplan,
+    userHMOdependent,
+    userLoans
+    ) => {
     return {
         type: FECTH_USER_DATA,
         userProfile: userProfile,
@@ -12,7 +16,13 @@ export const fetchUserData = (userProfile, userPosition, userHealthTracker, user
         userHealthTracker: userHealthTracker,
         userTransactions: userTransactions,
         userResultDocument: userResultDocument,
-        userNurseVisit: userNurseVisit
+        userNurseVisit: userNurseVisit,
+        userSchedule: userSchedule,
+        userSalaryDetails: userSalaryDetails,
+        userIncentives: userIncentives,
+        userHMOplan: userHMOplan,
+        userHMOdependent: userHMOdependent,
+        userLoans: userLoans
     }
 }
 
@@ -32,7 +42,20 @@ export const getUserData = () => {
         })
         if(response.ok){
             const res = await response.json();
-            dispatch(fetchUserData(res.userProfile, res.userPosition, res.userHealthTracker, res.userTransactions, res.userResultDocument, res.userNurseVisit));
+            dispatch(fetchUserData(
+                res.userProfile, 
+                res.userPosition, 
+                res.userHealthTracker,
+                res.userTransactions, 
+                res.userResultDocument, 
+                res.userNurseVisit, 
+                res.userSchedule,
+                res.userSalaryDetails,
+                res.userIncentives,
+                res.userHMOplan,
+                res.userHMOdependent,
+                res.userLoans
+                ));
         } else {
             console.log(response.error)
             dispatch(response.error)

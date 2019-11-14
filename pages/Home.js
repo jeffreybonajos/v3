@@ -9,6 +9,7 @@ import Account from "../components/PersonalComponent/ChangePasswordForm";
 import HealthTracker from "../components/PersonalComponent/HealthTracker";
 import Payroll from "../components/PersonalComponent/Payroll";
 import QrCode from "../components/PersonalComponent/QRCode";
+import TimeLogs from "../components/PersonalComponent/TimeLogs";
 import styled from "styled-components";
 import * as actions from '../store/actions/index';
 
@@ -86,6 +87,12 @@ class Home extends React.Component {
     const userTransactions = ({} = this.props.userTransactions || {});
     const userResultDocuments = ({} = this.props.userResultDocument || {});
     const userNurseVisits = ({} = this.props.userNurseVisit || {});
+    const userSchedule = ({} = this.props.userSchedule || {});
+    const userSalaryDetails = ({} = this.props.userSalaryDetails || {});
+    const userIncentives = ({} = this.props.userIncentives || {});
+    const userHMOplan = ({} = this.props.userHMOplan || {});
+    const userHMOdependents = ({} = this.props.userHMOdependent || {});
+    const userLoans = ({} = this.props.userLoans || {});
 
     console.log('home', userPosition)
     return (
@@ -179,8 +186,18 @@ class Home extends React.Component {
                   />
                 ) : this.state.componentOpen === "account" ? (
                   <Account />
+                ) : this.state.componentOpen === "time_logs" ? (
+                  <TimeLogs 
+                  userSchedule = {userSchedule}
+                  />
                 ) : this.state.componentOpen === "payroll" ? (
-                  <Payroll />
+                  <Payroll 
+                  userSalaryDetails ={userSalaryDetails}
+                  userIncentives = {userIncentives}
+                  userHMOplan = {userHMOplan}
+                  userHMOdependents = { userHMOdependents }
+                  userLoans = { userLoans }
+                  />
                 ) : this.state.componentOpen === "health_tracker" ? (
                   <HealthTracker 
                   userHealthTrackers={userHealthTrackers}
@@ -208,7 +225,13 @@ const mapStateToProps = state => {
     userHealthTracker: state.user.userHealthTracker,
     userTransactions: state.user.userTransactions,
     userResultDocument: state.user.userResultDocument,
-    userNurseVisit: state.user.userNurseVisit
+    userNurseVisit: state.user.userNurseVisit,
+    userSchedule: state.user.userSchedule,
+    userSalaryDetails: state.user.userSalaryDetails,
+    userIncentives: state.user.userIncentives,
+    userHMOplan: state.user.userHMOplan,
+    userHMOdependent: state.user.userHMOdependent,
+    userLoans: state.user.userLoans
   }
 }
 
