@@ -74,7 +74,7 @@ const payroll = ({userSalaryDetails, userIncentives, userHMOplan, userHMOdepende
       </tr>
       <tr>
         <StyledTd>{userHMOplan.hmo_plan}</StyledTd>
-        <StyledTd>{userHMOplan.hmo_plan}</StyledTd>
+        <StyledTd>{userHMOplan.selected_hmo_plan}</StyledTd>
         <StyledTd>{userHMOplan.hmo_monthly}</StyledTd>
       </tr>
     </StyledTable>

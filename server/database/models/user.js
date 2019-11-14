@@ -148,7 +148,7 @@ userModelAndConnection.getUserIncentives = (user_id) => {
 
 userModelAndConnection.getUserHMOplan = (user_id) => {
   return new Promise((resolve, reject) => {
-    pool.query('SELECT eh.*, h_g.hmo_plan, h_g.hmo_monthly, h_s.hmo_plan, h_s.hmo_monthly FROM employee_hmo AS eh INNER JOIN hmo AS h_g ON eh.hmo_id = h_g.hmo_id INNER JOIN hmo AS h_s ON eh.selected_hmo_id = h_s.hmo_id WHERE eh.user_id = ?', [user_id], function (error, result, fields) {
+    pool.query('SELECT eh.*, h_g.hmo_category, h_g.hmo_plan, h_s.hmo_plan AS selected_hmo_plan, h_s.hmo_monthly FROM employee_hmo AS eh INNER JOIN hmo AS h_g ON eh.hmo_id = h_g.hmo_id INNER JOIN hmo AS h_s ON eh.selected_hmo_id = h_s.hmo_id WHERE eh.user_id = ?', [user_id], function (error, result, fields) {
       if(error){
         return reject(error)
       }
