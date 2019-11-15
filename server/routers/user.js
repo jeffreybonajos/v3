@@ -44,7 +44,13 @@ router.get('/api/auth/home', async (req, res) => {
       const userTransactions = await userModel.getUserTransactions(token.user_id)
       const userResultDocument = await userModel.getResultDocuments(token.user_id)
       const userNurseVisit = await userModel.getNurseVisit(token.user_id)
-      res.json({userProfile, userPosition, userHealthTracker, userTransactions, userResultDocument, userNurseVisit});
+      const userSchedule = await userModel.getUserSchedule(token.user_id)
+      const userSalaryDetails = await userModel.getUserSalaryDetails(token.user_id)
+      const userIncentives = await userModel.getUserIncentives(token.user_id)
+      const userHMOplan = await userModel.getUserHMOplan(token.user_id)
+      const userHMOdependent = await userModel.getUserHMOdependent(token.user_id)
+      const userLoans = await userModel.getUserLoans(token.user_id)
+      res.json({userProfile, userPosition, userHealthTracker, userTransactions, userResultDocument, userNurseVisit, userSchedule, userSalaryDetails, userIncentives, userHMOplan, userHMOdependent, userLoans});
       }
   } catch(error) {
     res.status(404);

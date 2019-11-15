@@ -30,7 +30,7 @@ const StyledReminder = styled.span`
   font-style: italic;
   font-size: 10px;
 `;
-const payroll = props => (
+const payroll = ({userSalaryDetails, userIncentives, userHMOplan, userHMOdependents, userLoans}) => (
   <StyledContainer>
     <StyledTable>
       <tr>
@@ -50,11 +50,17 @@ const payroll = props => (
       </tr>
       <tr>
         <StyledTd>Gross Income</StyledTd>
-        <StyledTd>STATIC: 100000</StyledTd>
+        <StyledTd>{userSalaryDetails.monthly_gross}</StyledTd>
       </tr>
       <tr>
         <StyledTd>Basic Pay</StyledTd>
-        <StyledTd>STATIC: 100000</StyledTd>
+        <StyledTd>{userSalaryDetails.basic}</StyledTd>
+      </tr>
+    </StyledTable>
+    <StyledTable>
+      <tr>
+        <StyledTh>Incentives</StyledTh>
+        <StyledTh>{userIncentives.amount}</StyledTh>
       </tr>
     </StyledTable>
     <StyledTable>
@@ -67,9 +73,9 @@ const payroll = props => (
         <StyledTd>Monthly Payable</StyledTd>
       </tr>
       <tr>
-        <StyledTd>STATIC: GRANTED HMO</StyledTd>
-        <StyledTd>STATIC: SELECTED HMO</StyledTd>
-        <StyledTd>STATIC: 0</StyledTd>
+        <StyledTd>{userHMOplan.hmo_plan}</StyledTd>
+        <StyledTd>{userHMOplan.hmo_plan}</StyledTd>
+        <StyledTd>{userHMOplan.hmo_monthly}</StyledTd>
       </tr>
     </StyledTable>
     <StyledTable>
@@ -77,15 +83,18 @@ const payroll = props => (
         <StyledTh colSpan="3">HMO Dependent</StyledTh>
       </tr>
       <tr>
-        <StyledTd>Granted HMO</StyledTd>
+        <StyledTd>Name</StyledTd>
         <StyledTd>Selected HMO</StyledTd>
         <StyledTd>Monthly Payable</StyledTd>
       </tr>
-      <tr>
-        <StyledTd>STATIC: GRANTED HMO</StyledTd>
-        <StyledTd>STATIC: SELECTED HMO</StyledTd>
-        <StyledTd>STATIC: 0</StyledTd>
-      </tr>
+      { userHMOdependents.map(userHMOdependent => (
+      <tr key={userHMOdependent.id}>
+        <StyledTd>{userHMOdependent.last_name}, {userHMOdependent.first_name}</StyledTd>
+        <StyledTd>{userHMOdependent.hmo_plan}</StyledTd>
+        <StyledTd>{userHMOdependent.hmo_monthly}</StyledTd>
+       </tr>
+      ))}
+        
       <tr>
         <StyledReminder>
           Loans are pre computed per cut off deduction amount already
@@ -95,7 +104,14 @@ const payroll = props => (
     <StyledTable>
       <tr>
         <StyledTh>Loans</StyledTh>
+        <StyledTh></StyledTh>
       </tr>
+      { userLoans.map(userLoan => (
+      <tr key={userLoan.id}>
+        <StyledTd>{userLoan.loan_type_name}</StyledTd>
+        <StyledTd>{userLoan.amount_due}</StyledTd>
+       </tr>
+      ))}
     </StyledTable>
   </StyledContainer>
 );
