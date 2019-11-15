@@ -16,6 +16,7 @@ router.post('/api/auth/login', async (req, res) => {
       return res.status(400).send('invalid username or password')
       
     }
+   
     const userProfile = await userModel.getUserProfile(user.user_id)
     const userData = {
       user_id: userProfile.user_id,
@@ -23,7 +24,7 @@ router.post('/api/auth/login', async (req, res) => {
       type: AUTH_USER_TYPE
     }
     res.cookie('token', userData, COOKIE_OPTIONS);
-    res.status(200).json({userData, userProfile});
+    res.status(200).json({userData, userProfile, user});
   } catch(error) {
     res.json(error)
   } 
@@ -34,9 +35,17 @@ router.post('/api/auth/login', async (req, res) => {
 router.get('/api/auth/home', async (req, res) => {
   const { signedCookies = {} } = req;
   const { token } = signedCookies;
-  if(token && token.user_id){
+ 
+  if(token && token.user_id ){
     const userProfile = await userModel.getUserProfile(token.user_id)
-    return res.send({ user: userProfile});
+    const userVaccine = await userModel.getUserVaccine(token.user_id)
+    const userNurseVisit = await userModel.getUserNurseVisit(token.user_id)
+    const userResultDocuments = await userModel.getUserResultDocuments(token.user_id)
+    return res.send({ user: userProfile, 
+      vaccine: userVaccine, 
+      results: userResultDocuments,
+      nurseVisit: userNurseVisit});
+    
   }
   res.status(404);
 })

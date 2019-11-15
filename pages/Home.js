@@ -8,6 +8,7 @@ import Payroll from "../components/PersonalComponent/Payroll";
 import QrCode from "../components/PersonalComponent/QRCode";
 import styled from "styled-components";
 
+
 const StyledWrapper = styled.div`
   font-family: "Raleway", sans-serif;
   margin: 20px 0;
@@ -64,19 +65,41 @@ const StyledComponent = styled.div`
   padding-bottom: 20px;
 `;
 export default class Home extends React.Component {
+  _isMounted = false;
   state = {
     user: [],
+    vaccine: [],
+    results: [],
+    nurseVisit: [],
     componentOpen: "profile"
   };
 
   componentDidMount() {
+    this._isMounted = true;
     getUserHome().then(user => this.setState(user));
+    getUserHome().then(vaccine => this.setState(vaccine));
+    getUserHome().then(results => this.setState(results));
+    getUserHome().then(nurseVisit => this.setState(nurseVisit))
   }
   componentDidUpdate() {
     console.log(this.state.componentOpen);
   }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
   render() {
     const { user } = this.state;
+    const { vaccine } = this.state
+    const { results} = this.state;
+    const { nurseVisit} = this.state;
+   
+  //   var array = [];
+
+  //   array = Object.keys(vaccine).map(function (k) {
+  //     return {text: k, weight: vaccine[k]};
+  //   });
+  // console.log(array)
+  // console.log(this.state.vaccine)
     return (
       <Layout title="Home" {...this.props}>
         <StyledWrapper>
@@ -156,9 +179,32 @@ export default class Home extends React.Component {
                   <Account />
                 ) : this.state.componentOpen === "payroll" ? (
                   <Payroll />
-                ) : this.state.componentOpen === "health_tracker" ? (
-                  <HealthTracker />
-                ) : this.state.componentOpen === "qr_code" ? (
+                ) : this.state.componentOpen === "health_tracker" ?
+              
+                (
+                    //  this.state.vaccine.map(uservaccine =>(
+                      <HealthTracker
+                    vaccine = {vaccine}
+                    resultsDocuments = { results}
+                    nurseVisitAction = { nurseVisit}
+                    // name={uservaccine.name}
+                    // date_shot={uservaccine.date_shot}
+                    // date_next_shot={uservaccine.date_next_shot}
+                    // full_name={uservaccine.full_name}
+                    // status={uservaccine.status_name}
+                  
+                    //set the props.
+                    />
+                   
+                    // ))
+                
+
+                  
+                    
+                )
+                
+               
+                 : this.state.componentOpen === "qr_code" ? (
                   <QrCode />
                 ) : null}
               </StyledComponent>

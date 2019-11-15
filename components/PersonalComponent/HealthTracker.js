@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
+
 const StyledContainer = styled.div`
   margin-top: 20px;
   padding: 5px;
@@ -30,9 +31,37 @@ const StyledReminder = styled.span`
   font-style: italic;
   font-size: 10px;
 `;
-const healthTracker = props => (
+
+   
+const healthTracker = ({vaccine, resultsDocuments, nurseVisitAction}) => {
+console.log(resultsDocuments)
+  //  const data = [props];
+  //  const newdata = data.concat(data)
+  //  console.log(newdata)
+
+  // var holder = Object.keys(props).map(i => props[i]);
+ 
+  // var keys = holder.shift();
+  // holder = holder.map(function(row){
+  //   return keys.reduce(function(obj, key, i){
+  //     obj[key] = row[i];
+  //     return obj;
+  //   },{});
+  // });
+
+//   var keys = holder.shift();
+//  holder = holder.map(function (row) {
+//    return keys.reduce(function (obj, key, i){
+//      obj[key] = row[i];
+//      return obj;
+//    }, {});
+//  });
+    
+ 
+return (
   <StyledContainer>
     <StyledTable>
+    
       <tr>
         <StyledTh colSpan="4">Vaccinations</StyledTh>
       </tr>
@@ -42,12 +71,22 @@ const healthTracker = props => (
         <StyledTd>Next Shot</StyledTd>
         <StyledTd>Status</StyledTd>
       </tr>
-      <tr>
-        <StyledTd>STATIC: Vaccine Name</StyledTd>
-        <StyledTd>STATIC: Date of Shot</StyledTd>
-        <StyledTd>STATIC: Next Shot</StyledTd>
-        <StyledTd>STATIC: Status</StyledTd>
-      </tr>
+     
+     
+         {vaccine.map(uservaccine =>(
+           <tr>
+         <StyledTd>{uservaccine.name}</StyledTd>
+         <StyledTd>{uservaccine.date_shot}</StyledTd>
+         <StyledTd>{uservaccine.date_next_shot}</StyledTd>
+         <StyledTd>{uservaccine.status_name}</StyledTd>
+           </tr>
+         ))}
+           
+       
+      
+       
+     
+      
     </StyledTable>
     <StyledTable>
       <tr>
@@ -58,11 +97,14 @@ const healthTracker = props => (
         <StyledTd>Type</StyledTd>
         <StyledTd>Description</StyledTd>
       </tr>
-      <tr>
-        <StyledTd>STATIC: Date of Result</StyledTd>
-        <StyledTd>STATIC: Type</StyledTd>
-        <StyledTd>STATIC: Description</StyledTd>
+      {resultsDocuments.map(resultDocument => (
+        <tr>
+      <StyledTd>{resultDocument.result_date}</StyledTd>
+      <StyledTd>{resultDocument.type}</StyledTd>
+      <StyledTd>{resultDocument.description}</StyledTd>
       </tr>
+      ))}
+      
     </StyledTable>
     <StyledTable>
       <tr>
@@ -77,17 +119,21 @@ const healthTracker = props => (
         <StyledTd>Action Taken</StyledTd>
         <StyledTd>Notes</StyledTd>
       </tr>
-      <tr>
-        <StyledTd>Static: Date</StyledTd>
-        <StyledTd>Static: Complaints</StyledTd>
-        <StyledTd>Static: Findings</StyledTd>
-        <StyledTd>Static: Intervention</StyledTd>
-        <StyledTd>Static: Nurse-In-Charge</StyledTd>
-        <StyledTd>Static: Action Taken</StyledTd>
-        <StyledTd>Static: Notes</StyledTd>
+      {nurseVisitAction.map(userNurseVisit => (
+        <tr>
+        <StyledTd>{userNurseVisit.date_created}</StyledTd>
+        <StyledTd>{userNurseVisit.complain}</StyledTd>
+      <StyledTd>{userNurseVisit.name}</StyledTd>
+      <StyledTd>{userNurseVisit.intervention}</StyledTd>
+      <StyledTd>{userNurseVisit.nurse_fullname}</StyledTd>
+      <StyledTd>{userNurseVisit.action}</StyledTd>
+      <StyledTd>{userNurseVisit.note}</StyledTd>
       </tr>
+      ))}
+      
     </StyledTable>
   </StyledContainer>
-);
+  );
+};
 
 export default healthTracker;
