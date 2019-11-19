@@ -161,7 +161,7 @@ class Sidedrawer extends Component {
             {this.state.open && (
               <StyledDropdownContent>
                 <SubNav>
-                  <Link href="/home">
+                  <Link href="/personal">
                     <PersonalNav><i className="fa fa-circle-o"></i>&nbsp;&nbsp;Profile</PersonalNav>
                   </Link>
                   <PersonalNav><i className="fa fa-circle-o"></i>&nbsp;&nbsp;Payslips</PersonalNav>

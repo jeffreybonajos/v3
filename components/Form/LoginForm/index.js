@@ -1,9 +1,5 @@
-import Router from "next/router";
 import { connect } from 'react-redux'
 
-
-import { loginUser } from "../../../lib/Auth";
-import Modal from "../../UI/Modal";
 import styled from "styled-components";
 import * as actions from '../../../store/actions/index';
 
@@ -79,33 +75,11 @@ const StyledErrorMsg = styled.h1`
 class LoginForm extends React.Component {
   state = {
     username: "",
-    password: "",
-    error: "",
-    isLoading: false,
-    invalidCredentials: false
+    password: ""
   };
 
-  handleModalClose = () => {
-    this.setState({ invalidCredentials: false });
-  };
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
-  };
-
-  handleSubmit = event => {
-    const { username, password } = this.state;
-
-    event.preventDefault();
-    this.setState({ error: "", isLoading: true });
-    loginUser(username, password)
-      .then(() => {
-        Router.push("/");
-      })
-      .catch(this.showError);
-  };
-
-  showError = () => {
-    this.setState({ isLoading: false, invalidCredentials: true });
   };
 
   submitHandler = (event) => {
@@ -115,26 +89,18 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    const { error, isLoading } = this.state;
-    let invalidCredentialsError = null;
-    invalidCredentialsError = (
-      <div>
-        <StyledImg src="/static/error.png" alt="Error" />
-        <StyledErrorMsg>WRONG USERNAME OR PASSWORD</StyledErrorMsg>
-        <br />
-        <StyledErrorButton onClick={this.handleModalClose}>
-          OK
-        </StyledErrorButton>
-      </div>
-    );
+    const { error, isLoading } = this.props;
+
+    let errorMessage = null;
+
+    if(error){
+      errorMessage = (
+        <p>invalid username or password</p>
+      )
+    }
+  
     return (
       <>
-        <Modal
-          show={this.state.invalidCredentials}
-          modalClosed={this.handleModalClose}
-        >
-          {invalidCredentialsError}
-        </Modal>
         <form onSubmit={this.submitHandler}>
           <div>
             <StyledInput
@@ -156,9 +122,9 @@ class LoginForm extends React.Component {
             />
           </div>
           <StyledButton disabled={isLoading} type="submit">
-            {isLoading ? "Logging in" : "Login"}
+            { this.props.isLoading ? "Logging in" : "Login"}
           </StyledButton>
-          {error && <div>{error}</div>}
+          <div>{errorMessage}</div>
         </form>
       </>
     );
@@ -168,7 +134,7 @@ class LoginForm extends React.Component {
 const mapStateToProps = state => {
   return {
     isLoading: state.auth.isLoading,
-    
+    error: state.auth.error
   }
 }
 

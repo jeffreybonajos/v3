@@ -1,8 +1,6 @@
 import { connect } from "react-redux";
 
 import Layout from "../components/Layout";
-import { getUserHome, authInitialProps } from "../lib/Auth";
-import RelatedEmployees from "../components/PersonalComponent/RelatedEmployees";
 import Profile from "../components/PersonalComponent/Profile";
 import TransactionHistory from "../components/PersonalComponent/TransactionHistory";
 import Account from "../components/PersonalComponent/ChangePasswordForm";
@@ -82,19 +80,6 @@ class Home extends React.Component {
   }
   render() {
     const userProfile = ({} = this.props.userProfile || {});
-    const userPosition = ({} = this.props.userPosition || {});
-    const userHealthTrackers = ({} = this.props.userHealthTracker || {});
-    const userTransactions = ({} = this.props.userTransactions || {});
-    const userResultDocuments = ({} = this.props.userResultDocument || {});
-    const userNurseVisits = ({} = this.props.userNurseVisit || {});
-    const userSchedule = ({} = this.props.userSchedule || {});
-    const userSalaryDetails = ({} = this.props.userSalaryDetails || {});
-    const userIncentives = ({} = this.props.userIncentives || {});
-    const userHMOplan = ({} = this.props.userHMOplan || {});
-    const userHMOdependents = ({} = this.props.userHMOdependent || {});
-    const userLoans = ({} = this.props.userLoans || {});
-
-    console.log('home', userPosition)
     return (
       <Layout title="Home">
         <StyledWrapper>
@@ -160,50 +145,18 @@ class Home extends React.Component {
               </StyledButton>
               <StyledComponent>
                 {this.state.componentOpen === "profile" ? (
-                  <Profile
-                    full_name={userProfile.full_name}
-                    gender={userProfile.gender_type}
-                    address={userProfile.registered_address}
-                    blood_type={userProfile.blood_type}
-                    marital_status={userProfile.marital_status}
-                    email={userProfile.email}
-                    branch_site={userProfile.branch}
-                    department={userProfile.department}
-                    team_name={userProfile.team_name}
-                    position={userPosition.position}
-                    status={userProfile.status}
-                    account_type={userProfile.role_type}
-                    date_started={userProfile.date_started}
-                    hdmf={userProfile.hdmf}
-                    phic={userProfile.phic}
-                    sss={userProfile.sss}
-                    tin={userProfile.tin}
-                  />
+                  <Profile/>
                   
                 ) : this.state.componentOpen === "transaction_history" ? (
-                  <TransactionHistory 
-                  userTransactions={userTransactions}
-                  />
+                  <TransactionHistory />
                 ) : this.state.componentOpen === "account" ? (
                   <Account />
                 ) : this.state.componentOpen === "time_logs" ? (
-                  <TimeLogs 
-                  userSchedule = {userSchedule}
-                  />
+                  <TimeLogs />
                 ) : this.state.componentOpen === "payroll" ? (
-                  <Payroll 
-                  userSalaryDetails ={userSalaryDetails}
-                  userIncentives = {userIncentives}
-                  userHMOplan = {userHMOplan}
-                  userHMOdependents = { userHMOdependents }
-                  userLoans = { userLoans }
-                  />
+                  <Payroll />
                 ) : this.state.componentOpen === "health_tracker" ? (
-                  <HealthTracker 
-                  userHealthTrackers={userHealthTrackers}
-                  userResultDocuments = {userResultDocuments}
-                  userNurseVisits = {userNurseVisits}
-                  />
+                  <HealthTracker />
                 ) : this.state.componentOpen === "qr_code" ? (
                   <QrCode />
                 ) : null}
@@ -221,17 +174,6 @@ class Home extends React.Component {
 const mapStateToProps = state => {
   return {
     userProfile: state.user.userProfile,
-    userPosition: state.user.userPosition,
-    userHealthTracker: state.user.userHealthTracker,
-    userTransactions: state.user.userTransactions,
-    userResultDocument: state.user.userResultDocument,
-    userNurseVisit: state.user.userNurseVisit,
-    userSchedule: state.user.userSchedule,
-    userSalaryDetails: state.user.userSalaryDetails,
-    userIncentives: state.user.userIncentives,
-    userHMOplan: state.user.userHMOplan,
-    userHMOdependent: state.user.userHMOdependent,
-    userLoans: state.user.userLoans
   }
 }
 

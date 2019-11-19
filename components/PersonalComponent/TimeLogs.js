@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
 
 const StyledContainer = styled.div`
   margin-top: 20px;
@@ -30,25 +31,36 @@ const StyledReminder = styled.span`
   font-style: italic;
   font-size: 10px;
 `;
-const TimeLogs = ({userSchedule}) => (
-    <StyledContainer>
-    <StyledTable>
-      <tr>
-        <StyledTh colSpan="4">Time Logs</StyledTh>
-      </tr>
-      <tr>
-        <StyledTd>Days</StyledTd>
-        <StyledTd>Time-In</StyledTd>
-        <StyledTd>Time-out</StyledTd>
-      </tr>
-      <tr>
-        <StyledTd >{userSchedule.days}</StyledTd>
-        <StyledTd >{userSchedule.time_in}</StyledTd>
-        <StyledTd >{userSchedule.time_out}</StyledTd>
-      </tr>
-    </StyledTable>
-    
-  </StyledContainer>
-);
+class TimeLogs extends React.Component {
+  render() {
+    const userSchedule = ({} = this.props.userSchedule || {});
+    return (
+      <StyledContainer>
+        <StyledTable>
+          <tr>
+            <StyledTh colSpan="4">Time Logs</StyledTh>
+          </tr>
+          <tr>
+            <StyledTd>Days</StyledTd>
+            <StyledTd>Time-In</StyledTd>
+            <StyledTd>Time-out</StyledTd>
+          </tr>
+          <tr>
+            <StyledTd >{userSchedule.days}</StyledTd>
+            <StyledTd >{userSchedule.time_in}</StyledTd>
+            <StyledTd >{userSchedule.time_out}</StyledTd>
+          </tr>
+        </StyledTable>
+        
+      </StyledContainer>
+    )
+  }
+}
 
-export default TimeLogs;
+const mapStateToProps = state => {
+  return {
+    userSchedule: state.user.userSchedule
+  }
+}
+
+export default connect(mapStateToProps)(TimeLogs);

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { connect } from 'react-redux'
 
 const StyledContainer = styled.div`
   margin-top: 20px;
@@ -30,8 +31,14 @@ const StyledReminder = styled.span`
   font-style: italic;
   font-size: 10px;
 `;
-const healthTracker = ({ userHealthTrackers, userResultDocuments, userNurseVisits }) => (
-  <StyledContainer>
+class healthTracker extends React.Component {
+  render() {
+    const userHealthTrackers = ({} = this.props.userHealthTracker || {});
+    const userResultDocuments = ({} = this.props.userResultDocument || {});
+    const userNurseVisits = ({} = this.props.userNurseVisit || {});
+
+    return (
+      <StyledContainer>
     <StyledTable>
       <tr>
         <StyledTh colSpan="4">Vaccinations</StyledTh>
@@ -95,8 +102,17 @@ const healthTracker = ({ userHealthTrackers, userResultDocuments, userNurseVisit
       ))}
     </StyledTable>
   </StyledContainer>
-);
+    )
+  }
+}
+  
+const mapStateToProps = state => {
+  return {
+    userHealthTracker: state.user.userHealthTracker,
+    userResultDocument: state.user.userResultDocument,
+    userNurseVisit: state.user.userNurseVisit,
+  }
+}
 
 
-
-export default healthTracker;
+export default connect(mapStateToProps)(healthTracker);

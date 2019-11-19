@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import {connect} from 'react-redux';
 
 const StyledContainer = styled.div`
   margin-top: 20px;
@@ -30,19 +31,30 @@ const StyledReminder = styled.span`
   font-style: italic;
   font-size: 10px;
 `;
-const TransactionHistory = ({ userTransactions }) => (
-  <StyledContainer>
-    <StyledTable>
-      { userTransactions.map(userTransaction => (
-      <tr key={userTransaction.id}>
-        <StyledTd >We would like to inform you that an amount of {userTransaction.amount} has been credited to your account as tax refund.</StyledTd>
-        <StyledTd >{userTransaction.date_read}</StyledTd>
-        <StyledTd >{userTransaction.date_created}</StyledTd>
-      </tr>
-      ))}
-    </StyledTable>
-    
-  </StyledContainer>
-);
+class TransactionHistory extends React.Component {
+  render() {
+    const userTransactions = ({} = this.props.userTransactions || {});
+    return (
+      <StyledContainer>
+        <StyledTable>
+          { userTransactions.map(userTransaction => (
+          <tr key={userTransaction.id}>
+            <StyledTd >We would like to inform you that an amount of {userTransaction.amount} has been credited to your account as tax refund.</StyledTd>
+            <StyledTd >{userTransaction.date_read}</StyledTd>
+            <StyledTd >{userTransaction.date_created}</StyledTd>
+          </tr>
+          ))}
+        </StyledTable>
+        
+      </StyledContainer>
+    )
+  }
+}
 
-export default TransactionHistory;
+const mapStateToProps = state => {
+  return {
+    userTransactions: state.user.userTransactions
+  }
+}
+
+export default connect(mapStateToProps)(TransactionHistory);

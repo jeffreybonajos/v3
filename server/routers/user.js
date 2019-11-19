@@ -22,7 +22,8 @@ router.post('/api/auth/login', async (req, res) => {
       user_id: userProfile.user_id,
       name: userProfile.full_name,
       type: AUTH_USER_TYPE,
-      team_id: userTeamId.team_id
+      team_id: userTeamId.team_id,
+      company_id: userProfile.company_id,
     }
     res.cookie('token', userData, COOKIE_OPTIONS);
     res.status(200).json({userData, userProfile});
@@ -40,7 +41,7 @@ router.get('/api/auth/home', async (req, res) => {
     if(token && token.user_id){
       const userProfile = await userModel.getUserProfile(token.user_id)
       const userPosition = await userModel.getUserPosition(token.user_id)
-      const userHealthTracker = await userModel.getUserHealthTracker(token.user_id)
+      const userHealthTracker = await userModel.getUserHealthTracker(token.user_id, token.company_id)
       const userTransactions = await userModel.getUserTransactions(token.user_id)
       const userResultDocument = await userModel.getResultDocuments(token.user_id)
       const userNurseVisit = await userModel.getNurseVisit(token.user_id)

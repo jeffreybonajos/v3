@@ -69,9 +69,9 @@ userModelAndConnection.getUserTeamMembers = (team_id) => {
   })
 }
 
-userModelAndConnection.getUserHealthTracker = (user_id) => {
+userModelAndConnection.getUserHealthTracker = (user_id, company_id) => {
   return new Promise((resolve, reject) => {
-    pool.query('Select employee_health_vaccine.id, health_record.name, employee_health_vaccine.date_shot, employee_health_vaccine.date_next_shot, health_vaccine_status.status_name, user_information.full_name, employee_health_vaccine.user_id FROM employee_health_vaccine LEFT JOIN health_record ON health_record.id = employee_health_vaccine.vaccine_id LEFT JOIN health_vaccine_status ON health_vaccine_status.id = employee_health_vaccine.status_id LEFT JOIN user_information ON employee_health_vaccine.user_id = user_information.user_id WHERE employee_health_vaccine.user_id = ?', [user_id], function (error, result, fields) {
+    pool.query('Select employee_health_vaccine.id, health_record.name, employee_health_vaccine.date_shot, employee_health_vaccine.date_next_shot, health_vaccine_status.status_name, user_information.full_name, employee_health_vaccine.user_id FROM employee_health_vaccine LEFT JOIN health_record ON health_record.id = employee_health_vaccine.vaccine_id LEFT JOIN health_vaccine_status ON health_vaccine_status.id = employee_health_vaccine.status_id LEFT JOIN user_information ON employee_health_vaccine.user_id = user_information.user_id WHERE employee_health_vaccine.user_id = ? AND user_information.company_id = ? AND employee_health_vaccine.date_archived IS NULL', [user_id, company_id], function (error, result, fields) {
       if(error){
         return reject(error)
       }

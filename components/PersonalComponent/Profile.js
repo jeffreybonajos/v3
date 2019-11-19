@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { connect } from 'react-redux';
 
 const StyledContainer = styled.div`
   margin-top: 20px;
@@ -24,94 +25,108 @@ const StyledTd = styled.td`
   padding: 10px;
   text-shadow: 1px 1px 1px #fff;
 `;
-const profile = props => (
-  <StyledContainer>
-    <StyledTable>
-      <tr>
-        <StyledTh colSpan="2">Personal Information</StyledTh>
-      </tr>
-      <tr>
-        <StyledTd>Name</StyledTd>
-        <StyledTd>{props.full_name}</StyledTd>
-      </tr>
-      <tr>
-        <StyledTd>Gender</StyledTd>
-        <StyledTd>{props.gender}</StyledTd>
-      </tr>
-      <tr>
-        <StyledTd>Address</StyledTd>
-        <StyledTd>{props.address}</StyledTd>
-      </tr>
-      <tr>
-        <StyledTd> Blood Type</StyledTd>
-        <StyledTd>{props.blood_type}</StyledTd>
-      </tr>
-      <tr>
-        <StyledTd>Marital Status</StyledTd>
-        <StyledTd>
-          {props.marital_status}
-        </StyledTd>
-      </tr>
-    </StyledTable>
-    <StyledTable>
-      <tr>
-        <StyledTh colSpan="2">Company Information</StyledTh>
-      </tr>
-      <tr>
-        <StyledTd>OS EMAIL</StyledTd>
-        <StyledTd>{props.email}</StyledTd>
-      </tr>
-      <tr>
-        <StyledTd>Branch/Site</StyledTd>
-        <StyledTd>{props.branch_site}</StyledTd>
-      </tr>
-      <tr>
-        <StyledTd>Department</StyledTd>
-        <StyledTd>{props.department}</StyledTd>
-      </tr>
-      <tr>
-        <StyledTd>Team</StyledTd>
-        <StyledTd>{props.team_name}</StyledTd>
-      </tr>
-      <tr>
-        <StyledTd>Position</StyledTd>
-        <StyledTd>{props.position}</StyledTd>
-      </tr>
-      <tr>
-        <StyledTd>Status</StyledTd>
-        <StyledTd>{props.status}</StyledTd>
-      </tr>
-      <tr>
-        <StyledTd>OSNet Account Type</StyledTd>
-        <StyledTd>{props.account_type}</StyledTd>
-      </tr>
-      <tr>
-        <StyledTd>Date Started</StyledTd>
-        <StyledTd>{props.date_started}</StyledTd>
-      </tr>
-    </StyledTable>
-    <StyledTable>
-      <tr>
-        <StyledTh colSpan="2">Government ID Information</StyledTh>
-      </tr>
-      <tr>
-        <StyledTd>HDMF</StyledTd>
-        <StyledTd>{props.hdmf}</StyledTd>
-      </tr>
-      <tr>
-        <StyledTd>PHIC</StyledTd>
-        <StyledTd>{props.phic}</StyledTd>
-      </tr>
-      <tr>
-        <StyledTd>SSS</StyledTd>
-        <StyledTd>{props.sss}</StyledTd>
-      </tr>
-      <tr>
-        <StyledTd>TIN</StyledTd>
-        <StyledTd>{props.tin}</StyledTd>
-      </tr>
-    </StyledTable>
-  </StyledContainer>
-);
+class profile extends React.Component {
 
-export default profile;
+  render(){
+    const userProfile = ({} = this.props.userProfile || {});
+    const userPosition = ({} = this.props.userPosition || {});
+    return (
+      <StyledContainer>
+        <StyledTable>
+          <tr>
+            <StyledTh colSpan="2">Personal Information</StyledTh>
+          </tr>
+          <tr>
+            <StyledTd>Name</StyledTd>
+            <StyledTd>{userProfile.full_name}</StyledTd>
+          </tr>
+          <tr>
+            <StyledTd>Gender</StyledTd>
+            <StyledTd>{userProfile.gender}</StyledTd>
+          </tr>
+          <tr>
+            <StyledTd>Address</StyledTd>
+            <StyledTd>{userProfile.registered_address}</StyledTd>
+          </tr>
+          <tr>
+            <StyledTd> Blood Type</StyledTd>
+            <StyledTd>{userProfile.blood_type}</StyledTd>
+          </tr>
+          <tr>
+            <StyledTd>Marital Status</StyledTd>
+            <StyledTd>
+              {userProfile.marital_status}
+            </StyledTd>
+          </tr>
+        </StyledTable>
+        <StyledTable>
+          <tr>
+            <StyledTh colSpan="2">Company Information</StyledTh>
+          </tr>
+          <tr>
+            <StyledTd>OS EMAIL</StyledTd>
+            <StyledTd>{userProfile.email}</StyledTd>
+          </tr>
+          <tr>
+            <StyledTd>Branch/Site</StyledTd>
+            <StyledTd>{userProfile.branch}</StyledTd>
+          </tr>
+          <tr>
+            <StyledTd>Department</StyledTd>
+            <StyledTd>{userProfile.department}</StyledTd>
+          </tr>
+          <tr>
+            <StyledTd>Team</StyledTd>
+            <StyledTd>{userProfile.team_name}</StyledTd>
+          </tr>
+          <tr>
+            <StyledTd>Position</StyledTd>
+            <StyledTd>{userPosition.position}</StyledTd>
+          </tr>
+          <tr>
+            <StyledTd>Status</StyledTd>
+            <StyledTd>{userProfile.status}</StyledTd>
+          </tr>
+          <tr>
+            <StyledTd>OSNet Account Type</StyledTd>
+            <StyledTd>{userProfile.role_type}</StyledTd>
+          </tr>
+          <tr>
+            <StyledTd>Date Started</StyledTd>
+            <StyledTd>{userProfile.date_started}</StyledTd>
+          </tr>
+        </StyledTable>
+        <StyledTable>
+          <tr>
+            <StyledTh colSpan="2">Government ID Information</StyledTh>
+          </tr>
+          <tr>
+            <StyledTd>HDMF</StyledTd>
+            <StyledTd>{userProfile.pag_ibig}</StyledTd>
+          </tr>
+          <tr>
+            <StyledTd>PHIC</StyledTd>
+            <StyledTd>{userProfile.phic}</StyledTd>
+          </tr>
+          <tr>
+            <StyledTd>SSS</StyledTd>
+            <StyledTd>{userProfile.sss}</StyledTd>
+          </tr>
+          <tr>
+            <StyledTd>TIN</StyledTd>
+            <StyledTd>{userProfile.tin}</StyledTd>
+          </tr>
+        </StyledTable>
+      </StyledContainer>
+    )
+  }
+}
+  
+const mapStateToProps = state => {
+  return {
+    userProfile: state.user.userProfile,
+    userPosition: state.user.userPosition,
+  }
+}
+
+export default connect(mapStateToProps)(profile);

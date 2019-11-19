@@ -119,7 +119,7 @@ class NavigationItems extends Component {
               </StyledA>
               {this.state.open && (
                 <StyledDropdownContent id="myDropdown">
-                  <Link href="/home">
+                  <Link href="/personal">
                     <StyledA>Personal</StyledA>
                   </Link>
                   <StyledA onClick={this.handleLogout}>Logout</StyledA>

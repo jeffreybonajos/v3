@@ -50,7 +50,6 @@ class Team extends React.Component {
     
     render() {
       const teams = ({} = this.props.userTeamMembers || {});
-      console.log('team',teams)
       return (
         <Layout title="Team">
             <StyledWrapper>
