@@ -73,7 +73,7 @@ class Home extends React.Component {
   state = {
     componentOpen: "profile"
   };
-  
+
   componentDidMount() {
     this.props.onFetchUserData();
   }
@@ -179,30 +179,30 @@ class Home extends React.Component {
                     sss={userProfile.sss}
                     tin={userProfile.tin}
                   />
-                  
+
                 ) : this.state.componentOpen === "transaction_history" ? (
-                  <TransactionHistory 
-                  userTransactions={userTransactions}
+                  <TransactionHistory
+                    userTransactions={userTransactions} userProfile={userProfile}
                   />
                 ) : this.state.componentOpen === "account" ? (
                   <Account />
                 ) : this.state.componentOpen === "time_logs" ? (
-                  <TimeLogs 
-                  userSchedule = {userSchedule}
+                  <TimeLogs
+                    userSchedule={userSchedule}
                   />
                 ) : this.state.componentOpen === "payroll" ? (
-                  <Payroll 
-                  userSalaryDetails ={userSalaryDetails}
-                  userIncentives = {userIncentives}
-                  userHMOplan = {userHMOplan}
-                  userHMOdependents = { userHMOdependents }
-                  userLoans = { userLoans }
+                  <Payroll
+                    userSalaryDetails={userSalaryDetails}
+                    userIncentives={userIncentives}
+                    userHMOplan={userHMOplan}
+                    userHMOdependents={userHMOdependents}
+                    userLoans={userLoans}
                   />
                 ) : this.state.componentOpen === "health_tracker" ? (
-                  <HealthTracker 
-                  userHealthTrackers={userHealthTrackers}
-                  userResultDocuments = {userResultDocuments}
-                  userNurseVisits = {userNurseVisits}
+                  <HealthTracker
+                    userHealthTrackers={userHealthTrackers}
+                    userResultDocuments={userResultDocuments}
+                    userNurseVisits={userNurseVisits}
                   />
                 ) : this.state.componentOpen === "qr_code" ? (
                   <QrCode />
@@ -237,7 +237,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchUserData: () => { dispatch(actions.getUserData())}
+    onFetchUserData: () => { dispatch(actions.getUserData()) }
   }
 }
 
