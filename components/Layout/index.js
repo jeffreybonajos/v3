@@ -2,6 +2,7 @@ import Link from "next/link";
 import { logOutUser } from "../../lib/Auth";
 import Toolbar from "../Navigation/Toolbar";
 import SideDrawer from "../Navigation/SideDrawer/SideDrawer";
+import Calendar from "../Calendar/Calendar";
 import styled from "styled-components";
 
 const StyledContainer = styled.div`
@@ -39,6 +40,7 @@ const Layout = ({ children, title, auth }) => {
             </StyledCheat>
             <StyledContainer>{children}</StyledContainer>
           </StyledWrapper>
+          <Calendar />
         </>
       ) : (
         <>{children}</>
