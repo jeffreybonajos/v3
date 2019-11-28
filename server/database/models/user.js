@@ -16,7 +16,7 @@ userModelAndConnection.findByCredentials = ( username, password ) => {
 
 userModelAndConnection.getUserProfile = (user_id) => {
   return new Promise((resolve, reject) => {
-    pool.query('SELECT user_information.*, user_login.username, branch.branch, blood_type.blood_type, gender_type.gender_type, marital_status.marital_status, employment_type.employment_type, position.position, user_status.status, role.role_type, team.team_name FROM `user_information`LEFT JOIN blood_type ON blood_type.blood_type_id = user_information.blood_type LEFT JOIN gender_type ON gender_type.gender_type_id = user_information.gender LEFT JOIN nationality ON nationality.nationality_id = user_information.citizenship LEFT JOIN marital_status ON marital_status.marital_status_id = user_information.marital_status LEFT JOIN employment_type ON employment_type.employment_type_id = user_information.employment_type LEFT JOIN position ON position.position_id = user_information.position LEFT JOIN user_status ON user_status.status_id = user_information.status LEFT JOIN branch ON branch.branch_id = user_information.branch_site LEFT JOIN role ON role.role_id = user_information.role_id LEFT JOIN family_relationship ON family_relationship.family_relationship_id = user_information.emergency_contact_relationship LEFT JOIN team ON team.department_id = user_information.department_id JOIN user_login ON user_information.user_id = user_login.user_id WHERE user_information.user_id = ?', [user_id], function (error, result, fields) {
+    pool.query('SELECT user_information.*, user_login.username, user_login.password, branch.branch, blood_type.blood_type, gender_type.gender_type, marital_status.marital_status, employment_type.employment_type, position.position, user_status.status, role.role_type, team.team_name FROM `user_information`LEFT JOIN blood_type ON blood_type.blood_type_id = user_information.blood_type LEFT JOIN gender_type ON gender_type.gender_type_id = user_information.gender LEFT JOIN nationality ON nationality.nationality_id = user_information.citizenship LEFT JOIN marital_status ON marital_status.marital_status_id = user_information.marital_status LEFT JOIN employment_type ON employment_type.employment_type_id = user_information.employment_type LEFT JOIN position ON position.position_id = user_information.position LEFT JOIN user_status ON user_status.status_id = user_information.status LEFT JOIN branch ON branch.branch_id = user_information.branch_site LEFT JOIN role ON role.role_id = user_information.role_id LEFT JOIN family_relationship ON family_relationship.family_relationship_id = user_information.emergency_contact_relationship LEFT JOIN team ON team.department_id = user_information.department_id JOIN user_login ON user_information.user_id = user_login.user_id WHERE user_information.user_id = ?', [user_id], function (error, result, fields) {
       if(error){
         return reject(error)
       }
@@ -179,7 +179,60 @@ userModelAndConnection.getUserLoans = (user_id) => {
   })
 }
 
+userModelAndConnection.getUserLoginCounter = (user_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query('Select user_login.change_password_counter from user_login where user_login.user_id = ? LIMIT 1', [user_id], function (error, result, fields) {
+      if(error){
+        return reject(error)
+      }
+      return resolve(result[0])
+    })
+  })
+}
 
+userModelAndConnection.UpdateUserPassword = (new_password, user_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query('Update user_login SET user_login.password = ? where user_id = ?', [new_password, user_id], function (error, result, fields) {
+      if(error){
+        return reject(error)
+      }
+      return resolve(result[0])
+    })
+  })
+}
+
+userModelAndConnection.UpdateUserPasswordCouter = (user_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query('UPDATE user_login set change_password_counter = change_password_counter + 1 where user_id = ?', [user_id], function (error, result, fields) {
+      if(error){
+        return reject(error)
+      }
+      return resolve(result[0])
+    })
+  })
+}
+
+userModelAndConnection.UpdateUserPasswordActivated = (dateNow, user_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query('Update user_login SET date_activated = ? where user_id = ?', [dateNow, user_id], function (error, result, fields) {
+      if(error){
+        return reject(error)
+      }
+      return resolve(result[0])
+    })
+  })
+}
+
+userModelAndConnection.getAllNewsFeed = () => {
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT newsfeed_posts.*, user_information.full_name, user_information.profile_picture FROM newsfeed_posts left join user_information ON user_information.user_id = newsfeed_posts.user_id', function (error, result, fields) {
+      if(error){
+        return reject(error)
+      }
+      return resolve(result)
+    })
+  })
+}
 
 
 

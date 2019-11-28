@@ -1,6 +1,7 @@
 export {
     auth,
-    actLogout
+    actLogout,
+    updatePassword
 } from './auth';
 
 export {

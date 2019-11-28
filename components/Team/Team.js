@@ -31,13 +31,13 @@ const StyledTeam = styled.div`
     display: inline-block;
 `
 
-
+const url = 'https://awesomev3.s3-ap-southeast-1.amazonaws.com/pp/';
 
 const Team = ({ teams }) => (
     <StyledContainer>
         { teams.map(team => (
             <StyledTeam key={team.id}>
-            <StyledImg src="/static/default-profile.png" />
+            <StyledImg src= {team.profile_picture ? url + team.profile_picture : url + 'default-profile.png' } />
             <StyledSpan >{team.full_name}</StyledSpan>
             </StyledTeam>
         ))}

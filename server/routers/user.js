@@ -13,10 +13,11 @@ router.post('/api/auth/login', async (req, res) => {
   try{
     const user  = await userModel.findByCredentials(req.body.username, req.body.password)
     if(!user) {
-      return res.status(400).send('invalid username or password')
+      res.status(400).send('invalid username or password')
       
     }
     const userProfile = await userModel.getUserProfile(user.user_id)
+    const newsFeeds = await userModel.getAllNewsFeed()
     const userTeamId = await userModel.getUserTeamId(user.user_id)
     const userData = {
       user_id: userProfile.user_id,
@@ -26,7 +27,7 @@ router.post('/api/auth/login', async (req, res) => {
       company_id: userProfile.company_id,
     }
     res.cookie('token', userData, COOKIE_OPTIONS);
-    res.status(200).json({userData, userProfile});
+    res.status(200).json({userData, userProfile, newsFeeds});
   } catch(error) {
     res.json(error)
   } 
@@ -67,6 +68,19 @@ router.get('/api/auth/team', async (req, res) => {
       const userTeamMembers = await userModel.getUserTeamMembers(token.team_id)
       res.json({userTeamMembers});
       }
+  } catch(error) {
+    res.status(404);
+  }
+  
+})
+
+router.post('/api/auth/update_password', async (req, res) => {
+  try {
+      const dateNow = new Date();
+      await userModel.UpdateUserPassword(req.body.new_password, req.body.user_id)
+      await userModel.UpdateUserPasswordCouter(req.body.user_id)
+      await userModel.UpdateUserPasswordActivated(req.body.user_id, dateNow)
+      res.status(200).json({success: 'success'});
   } catch(error) {
     res.status(404);
   }

@@ -4,7 +4,10 @@ import {
     AUTH_START,
     AUTH_SUCCESS,
     AUTH_FAIL,
-    AUTH_LOGOUT
+    AUTH_LOGOUT,
+    UPDATE_PASSWORD_REQUEST,
+    UPDATE_PASSWORD_SUCCESS,
+    UPDATE_PASSWORD_FAILURE
 } from './actionTypes';
 
 
@@ -13,18 +16,18 @@ export const authStart = () => {
         type: AUTH_START
     };
 };
-export const authSuccess = (token, userProfile) => {
+export const authSuccess = (token, userProfile, newsFeeds) => {
     return {
         type: AUTH_SUCCESS,
         userData: token,
-        userProfile: userProfile
+        userProfile: userProfile,
+        newsFeeds: newsFeeds
     };
 };
 export const authFail = (error) => {
     return {
         type: AUTH_FAIL,
         error: error
-
     };
 };
 export const logout = () => {
@@ -45,6 +48,30 @@ export const actLogout = () => {
         }
     }
 }
+
+export const updateRequest = () => {
+    return {
+        type: UPDATE_PASSWORD_REQUEST
+    }
+}
+
+export const updateSuccess= (success) => {
+    return {
+        type: UPDATE_PASSWORD_SUCCESS,
+        success: success
+    }
+}
+
+export const updateFailure = (error) => {
+    return {
+        type: UPDATE_PASSWORD_FAILURE,
+        error: error
+
+    }
+}
+
+
+
 const WINDOW_USER_SCRIPT_VARIABLE = '__USER__';
 
 export const auth = (username, password) => {
@@ -65,7 +92,7 @@ export const auth = (username, password) => {
         })
         if(response.ok){
             const res = await response.json();
-            dispatch(authSuccess(res.userData, res.userProfile))
+            dispatch(authSuccess(res.userData, res.userProfile, res.newsFeeds))
             if(typeof window !== 'undefined'){
                 window[WINDOW_USER_SCRIPT_VARIABLE] = res.userData || {} ;
             }
@@ -75,4 +102,33 @@ export const auth = (username, password) => {
         }
     };
 };
+
+
+export const updatePassword = (new_password, user_id) => {
+    return async dispatch => {
+        dispatch(updateRequest());
+
+        const response = await fetch('/api/auth/update_password', {
+            method: 'POST',
+            headers: {
+                // Check what headers the API needs. A couple of usuals right below
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                // Validation data coming from a form usually
+                new_password,
+                user_id
+            })
+        })
+        if(response.ok){
+            const res = await response.json();
+            dispatch(updateSuccess(res.success))
+            console.log(res);
+            Router.push("/");
+        }else {
+            dispatch(updateFailure(response.error))
+        }
+    }
+}
 

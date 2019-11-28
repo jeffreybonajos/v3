@@ -47,12 +47,12 @@ const StyledLogout = styled.div`
 const StyledLogoutIcon = styled.img`
   width: 7%;
 `;
-
+const url = 'https://awesomev3.s3-ap-southeast-1.amazonaws.com/pp/';
 
 const userinfo = ({userProfile}) => (
   <StyledDiv>
       <ImgContainer>
-        <StyledImg src="/static/default-profile.png" alt="Profile" />
+        <StyledImg src={`https://awesomev3.s3-ap-southeast-1.amazonaws.com/pp/${userProfile.profile_picture}`} alt="Profile" />
       </ImgContainer>
     <StyledInfo>
       <span>{userProfile.full_name}</span>

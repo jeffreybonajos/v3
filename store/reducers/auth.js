@@ -3,14 +3,19 @@ import {
     AUTH_START, 
     AUTH_SUCCESS, 
     AUTH_FAIL,
-    AUTH_LOGOUT
+    AUTH_LOGOUT,
+    UPDATE_PASSWORD_REQUEST,
+    UPDATE_PASSWORD_SUCCESS,
+    UPDATE_PASSWORD_FAILURE
 } from '../actions/actionTypes';
 
 const initialState = {
     token: null,
     userProfile: null,
     error: null,
-    isLoading: false
+    isLoading: false,
+    success: null,
+    newsFeeds: []
 }
 
 export const updateObject = (oldObject, updatedProperties) => {
@@ -28,6 +33,7 @@ export const authSuccess = (state, action) => {
     return updateObject(state, {
         token: action.userData,
         userProfile: action.userProfile,
+        newsFeeds: action.newsFeeds,
         error: null,
         isLoading: false
     });
@@ -46,6 +52,28 @@ export const authLogout = (state, action) => {
     })
 }
 
+export const updateRequest = (state, action) =>{
+    return updateObject(state, {error: null, isLoading: true});
+}
+
+export const updateSuccess = (state, action) =>{
+    return updateObject(state, {
+        success: action.success,
+        error: null,
+        isLoading: false
+    });
+}
+
+export const updateFailure = (state, action) =>{
+    return updateObject( state, {
+        error: action.error,
+        isLoading: false
+    });
+}
+
+
+
+
 
 export default (state = initialState, action) => {
     switch (action.type) {
@@ -53,6 +81,9 @@ export default (state = initialState, action) => {
         case AUTH_SUCCESS: return authSuccess(state, action) ;
         case AUTH_FAIL: return authFail(state, action);
         case AUTH_LOGOUT: return authLogout(state, action);
+        case UPDATE_PASSWORD_REQUEST: return updateRequest(state, action);
+        case UPDATE_PASSWORD_SUCCESS: return updateSuccess(state, action);
+        case UPDATE_PASSWORD_FAILURE: return updateFailure(state, action);
         default:
             return state;
     }
