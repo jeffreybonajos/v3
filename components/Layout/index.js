@@ -11,7 +11,7 @@ const StyledContainer = styled.div`
   height: 100%;
   display: inline-block;
   clear: left;
-  width: 80%;
+  width: 54%;
 `;
 const StyledCheat = styled.div`
   width: 20%;
