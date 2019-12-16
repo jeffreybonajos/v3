@@ -30,6 +30,9 @@ class profile extends React.Component {
   render(){
     const userProfile = ({} = this.props.userProfile || {});
     const userPosition = ({} = this.props.userPosition || {});
+  
+   
+  
     return (
       <StyledContainer>
         <StyledTable>

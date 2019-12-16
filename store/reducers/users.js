@@ -30,6 +30,7 @@ export const updateObject = (oldObject, updatedProperties) => {
 
 export const fetchUserData = (state, action) => {
     return updateObject(state, {
+      
         userProfile: action.userProfile,
         userPosition: action.userPosition,
         userHealthTracker: action.userHealthTracker,

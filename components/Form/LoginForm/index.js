@@ -4,6 +4,7 @@ import styled from "styled-components";
 import * as actions from '../../../store/actions/index';
 
 const StyledInput = styled.input`
+  
   font-family: "Roboto", sans-serif;
   outline: 0;
   background: #f2f2f2;
