@@ -1,33 +1,35 @@
-import { connect } from "react-redux";
-import Link from "next/link";
+
 import styled from "styled-components";
+import { connect } from 'react-redux'
 
 import Layout from "../components/Layout";
+import EventFeed from '../components/Index/newsFeeds';
 import Button from '../components/UI/Button';
 import Modal from '../components/UI/Modal';
-import Event from  '../components/Event'
+import NewEvent from  '../components/Event/newEvent'
+import Event from  '../components/Event/event'
 
 
 const StyledContainer = styled.div`
-background: #f2f2f2;
-display: inline-block;
-clear: left;
-width: 80%;
-margin: 86px 15px 0 15px;
-position: fixed;
-`;
+  background: #f2f2f2;
+  display: inline-block;
+  clear: left;
+  width: 80%;
+  margin: 86px 15px 0 15px;
+  position: fixed;
+  `;
 
 const StyledContainerButtonEvent = styled.div`
-  padding: 0px 20px 20px 20px;
+  padding: 0px 20px 20px 0px;
   position: fixed;
   right: 0%;
-  width: 30%;
+  width: 20%;
   height: 100%;
   overflow-y: AUTO;
 `;
 
 const StyledContainerNewsFeed = styled.div`
-  width: 50%;
+  width: 60%;
   float: left;
   position: relative;
     min-height: 1px;
@@ -69,75 +71,78 @@ position: relative;
     margin-bottom: 15px;
 `;
 
-class Index extends React.Component {
+
+const getFormattedDate = (date) => {
+    let year = date.getFullYear();
+    let month = (1 + date.getMonth()).toString().padStart(2, '0');
+    let day = date.getDate().toString().padStart(2, '0');
+  
+    return year + '-' + month + '-' + day;
+}
+
+class Index extends React.Component{
   state = {
     addEvent: false
   }
   eventButtonHandler = () => {
     this.setState({addEvent: true});
   }
-
+  
   eventModalClosed = () => {
     this.setState({addEvent: false});
   }
+  
 
-  eventModalbutton = () => {
-    alert('added event');
+  checkEvenNow = () => {
+    const eventList = this.props.eventList;
   }
 
-  render() {
-    const userProfile = ({} = this.props.userProfile || {});
-    const newsFeeds = ({} = this.props.newsFeeds || {});
-    console.log(newsFeeds);
+  render(){
+    const eventLists = this.props.eventList;
+    const newDate = new Date();
+    const testDate = getFormattedDate(newDate);
+    console.log('endex',testDate);
+    eventLists.map(event => { 
+        if(event.start === testDate) {
+          console.log("here");
+        }
+      }
+    )
     return (
-      <Layout title="Index">
+      <Layout title="Index" >
         <StyledContainer>
-            <StyledContainerButtonEvent>
-              <Button clicked={this.eventButtonHandler} > ADD EVENT </Button>
-            </StyledContainerButtonEvent>
-            
-            <StyledContainerNewsFeed>
-              { newsFeeds.map(newsFeed => (
-              
+          <StyledContainerNewsFeed>
+            {/* <EventFeed>
 
-              <StyledContainerEachNewsFeed key={newsFeed.id}>
-                <StyledStoryUnit>
-                    {newsFeed.profile_picture}
-                    {newsFeed.full_name}
-                    {newsFeed.image_url}
-                </StyledStoryUnit>
-                <StyledLikeSection>
-                  
-                  </StyledLikeSection>
-                  <StyledDescriptionSection>
-                  {newsFeed.desc}
-                    </StyledDescriptionSection> 
-                    <StyledCommentSection>
-
-
-                    </StyledCommentSection>
-              </StyledContainerEachNewsFeed>
-              ))}
+            </EventFeed> */}
           </StyledContainerNewsFeed>
-
-
-          <Modal show={this.state.addEvent} modalClosed={this.eventModalClosed} addEventButton={this.eventModalbutton}
-                cancelEventButton={this.eventModalClosed}>
-              <Event 
-              />
-            </Modal>
+          <StyledContainerButtonEvent>
+            <div>
+              
+            </div>
+            <Event></Event>
+            <Button clicked={this.eventButtonHandler}>Add Event</Button>
+          </StyledContainerButtonEvent>
         </StyledContainer>
+          <Modal show={this.state.addEvent} 
+             modalClosed={this.eventModalClosed}>
+          <NewEvent
+             modalClosed={this.eventModalClosed}
+            eventModalClosed={this.eventModalClosed}>
+
+          </NewEvent>
+        </Modal>
       </Layout>
-    );
+    )
   }
 }
 
 const mapStateToProps = state => {
-  return {
-    userProfile: state.auth.userData,
-    newsFeeds: state.auth.newsFeeds
+    return {
+      eventList: state.home.eventList,
+    }
   }
-}
+
 
 export default connect(mapStateToProps)(Index);
 

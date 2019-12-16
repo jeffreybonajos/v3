@@ -74,7 +74,6 @@ export const getUserTeam = () => {
         })
         if(response.ok){
             const res = await response.json();
-            console.log('action',res)
             dispatch(fetchUserTeam(res.userTeamMembers));
         } else {
             console.log(response.error)
@@ -83,3 +82,4 @@ export const getUserTeam = () => {
         
     };
 };
+

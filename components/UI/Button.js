@@ -19,7 +19,7 @@ const StyledButton = styled.button`
   &:hover,
   &:active,
   &:focus {
-    transform: scale(1.1);
+    transform: ${props => props.disabled ? null : 'scale(1.1)'};
   }
   
 `;

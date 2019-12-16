@@ -17,7 +17,6 @@ router.post('/api/auth/login', async (req, res) => {
       
     }
     const userProfile = await userModel.getUserProfile(user.user_id)
-    const newsFeeds = await userModel.getAllNewsFeed()
     const userTeamId = await userModel.getUserTeamId(user.user_id)
     const searchEmployee = await userModel.searchAllEmployee(userProfile.role_id, userProfile.company_id)
     const userData = {
@@ -29,7 +28,7 @@ router.post('/api/auth/login', async (req, res) => {
       company_id: userProfile.company_id,
     }
     res.cookie('token', userData, COOKIE_OPTIONS);
-    res.status(200).json({searchEmployee,userData, userProfile, newsFeeds});
+    res.status(200).json({userData, userProfile});
   } catch(error) {
     res.json(error)
   } 
@@ -62,6 +61,23 @@ router.get('/api/auth/home', async (req, res) => {
   
 })
 
+router.post('/api/home/post/event', async (req, res) => {
+  try{
+    
+    const {title, start, end, url, type, duration_start, duration_end} = req.body.eventData;
+    console.log(title, start, end, url, type, duration_start, duration_end);
+    await userModel.dbpostEvent(title, start, end, url, type, duration_start, duration_end)
+    if(!event) {
+      res.status(400)
+    }
+    res.status(200).json(event);
+  } catch(error) {
+    res.json(error)
+  } 
+    
+
+})
+
 router.get('/api/auth/team', async (req, res) => {
   try {
     const { signedCookies = {} } = req;
@@ -76,6 +92,65 @@ router.get('/api/auth/team', async (req, res) => {
   
 })
 
+router.get('/api/home', async (req, res) => {
+  try {
+    // const { signedCookies = {} } = req;
+    // const { token } = signedCookies;
+    // if(token && token.user_id){
+      const initBranches = await userModel.initBranch();
+      const eventList = await userModel.dbEventList();
+      res.json({initBranches, eventList});
+      // }
+  } catch(error) {
+    res.status(404);
+  }
+  
+})
+
+router.get('/api/home/events', async (req, res) => {
+  try {
+    const { signedCookies = {} } = req;
+    const { token } = signedCookies;
+    if(token && token.user_id){
+      const homeEvents = await userModel.getAllNewsFeed()
+      res.json({homeEvents});
+      }
+  } catch(error) {
+    res.status(404);
+  }
+  
+})
+
+router.post('/api/home/event/likes', async (req, res) => {
+  try {
+    const { signedCookies = {} } = req;
+    const { token } = signedCookies;
+    const event_id = req.body.event_id;
+    if(token && token.user_id){
+      const eventLikes = await userModel.getEventLikes(event_id)
+      res.json({eventLikes});
+      }
+  } catch(error) {
+    res.status(404);
+  }
+  
+})
+
+router.put('/api/home/event/like', async (req, res) => {
+  try {
+    const { signedCookies = {} } = req;
+    const { token } = signedCookies;
+    if(token && token.user_id){
+      await userModel.likeEvent(req.body.event_id, req.body.user_id)
+        res.status(200).json({success: 'success'});
+      }
+  } catch(error) {
+    res.status(404);
+  }
+  
+})
+
+
 router.post('/api/auth/update_password', async (req, res) => {
   try {
       const dateNow = new Date();
@@ -89,10 +164,11 @@ router.post('/api/auth/update_password', async (req, res) => {
   
 })
 
-
 router.post('/api/auth/logout', async (req, res) => {
   res.clearCookie('token', COOKIE_OPTIONS);
   res.sendStatus(204);
 })
+
+
 
 module.exports = router;

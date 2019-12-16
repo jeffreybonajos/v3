@@ -15,8 +15,7 @@ const initialState = {
     userProfile: null,
     error: null,
     isLoading: false,
-    success: null,
-    newsFeeds: []
+    success: null
 }
 
 export const updateObject = (oldObject, updatedProperties) => {
@@ -35,7 +34,6 @@ export const authSuccess = (state, action) => {
         token: action.userData,
         searchEmployee: action.searchEmployee,
         userProfile: action.userProfile,
-        newsFeeds: action.newsFeeds,
         error: null,
         isLoading: false
     });
