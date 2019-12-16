@@ -48,7 +48,7 @@ const StyledA = styled.a`
   :active {
     transform: scale(1.2);
   }
-
+  
   color: black;
   height: 100%;
   padding: 16px 10px;
@@ -59,6 +59,38 @@ const StyledA = styled.a`
   :active {
     transform: scale(1.1);
   }
+`;
+const StyledAFiltered = styled.a`
+height:100%;
+position: relative;
+display: block;
+padding:12px;
+background: white;
+color: dimgrey;
+font-size: 14px;
+text-decoration: none;
+transition: all 0.2s ease-in-out;
+text-align: left;
+-webkit-transition: all 0.3 ease;
+transition: all 0.3 ease;
+cursor: pointer;
+-webkit-transition-duration: 0.4s; /* Safari */
+transition-duration: 0.1s;
+&:hover,
+&:active,
+&:focus {
+    background: #f2f2f2;
+    box-shadow: inset 2px 0px 10px -5px rgba(0, 0, 0, 0.8);
+    color: red;
+  }
+`;
+
+const StyledInput = styled.input`
+ 
+  border: none;
+  border-color: transparent;
+  outline: none;
+
 `;
 const StyledDropdown = styled.div`
   position: relative;
@@ -74,12 +106,26 @@ const StyledDropdownContent = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.04);
   box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
 `;
-
 class NavigationItems extends Component {
+  
   container = React.createRef();
   state = {
-    open: false
+    open: false,
+    show: false,
+    search: '',
+
   };
+  changeHandler = event => {
+
+    this.setState({ search: event.target.value});
+    this.setState({show: true})
+    // this.setState(state => {
+    //   return {
+    //     show: !state.show
+    //   };
+    // });
+
+  }
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside);
   }
@@ -92,7 +138,8 @@ class NavigationItems extends Component {
       !this.container.current.contains(event.target)
     ) {
       this.setState({
-        open: false
+        open: false,
+        // show: false
       });
     }
   };
@@ -101,6 +148,15 @@ class NavigationItems extends Component {
     this.props.onLogout();
   }
   render() {
+    
+    const searchEmployees = ([] = this.props.searchEmployees || []);
+    const userProfile  = ({} = this.props.userProfile || {});
+    
+    // const full_name = searchEmployees.map((searchEmployee) =>
+    //     console.log(searchEmployee.first_name + " "  + searchEmployee.last_name)
+    // )
+    const filteredNames = searchEmployees.filter((searchEmployee) =>  searchEmployee.first_name ? searchEmployee.first_name.toLowerCase().includes(this.state.search.toLowerCase()) : null);
+
     const handlerButtonClick = () => {
       this.setState(state => {
         return {
@@ -108,11 +164,35 @@ class NavigationItems extends Component {
         };
       });
     };
-    const userProfile  = ({} = this.props.userProfile || {});
+
     return (
       <nav>
         <StyleUL>
           <StyledLI>
+              <StyledDropdown ref={this.container}>
+                <StyledA>
+                  <StyledInput
+                    value = {this.state.search}
+                    name="search"
+                    autoComplete = "off"
+                    onChange = {this.changeHandler}
+                    type="text" 
+                    placeholder="Search...">
+                  </StyledInput>
+                </StyledA>
+                 {this.state.show && (
+                <Link href="/personal">
+                  <StyledDropdownContent id="myDropdown1">
+                  {filteredNames.slice(0, 10).map((names, index) =>(
+                          <StyledAFiltered key={index}>
+                            {names.first_name + " " + names.last_name}
+                          </StyledAFiltered>
+                      
+                      ))}
+                  </StyledDropdownContent>
+                </Link>
+                )} 
+              </StyledDropdown>
             <StyledDropdown ref={this.container}>
               <StyledA onClick={handlerButtonClick}>
                 {userProfile.full_name}
@@ -120,7 +200,7 @@ class NavigationItems extends Component {
               {this.state.open && (
                 <StyledDropdownContent id="myDropdown">
                   <Link href="/personal">
-                    <StyledA>Personal</StyledA>
+              <StyledA>personal</StyledA>
                   </Link>
                   <StyledA onClick={this.handleLogout}>Logout</StyledA>
                 </StyledDropdownContent>
@@ -135,7 +215,8 @@ class NavigationItems extends Component {
 
 const mapStateToProps = state => {
   return {
-    userProfile: state.auth.userProfile
+    userProfile: state.auth.userProfile,
+    searchEmployees: state.auth.searchEmployee
   }
   
 }
@@ -143,6 +224,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onLogout: () => dispatch(actions.actLogout())
+
+    
   };
 };
 

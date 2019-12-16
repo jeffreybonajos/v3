@@ -19,15 +19,17 @@ router.post('/api/auth/login', async (req, res) => {
     const userProfile = await userModel.getUserProfile(user.user_id)
     const newsFeeds = await userModel.getAllNewsFeed()
     const userTeamId = await userModel.getUserTeamId(user.user_id)
+    const searchEmployee = await userModel.searchAllEmployee(userProfile.role_id, userProfile.company_id)
     const userData = {
       user_id: userProfile.user_id,
       name: userProfile.full_name,
+      role_id: userProfile.role_id,
       type: AUTH_USER_TYPE,
       team_id: userTeamId.team_id,
       company_id: userProfile.company_id,
     }
     res.cookie('token', userData, COOKIE_OPTIONS);
-    res.status(200).json({userData, userProfile, newsFeeds});
+    res.status(200).json({searchEmployee,userData, userProfile, newsFeeds});
   } catch(error) {
     res.json(error)
   } 

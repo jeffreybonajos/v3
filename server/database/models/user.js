@@ -5,13 +5,39 @@ let userModelAndConnection = {};
 
 userModelAndConnection.findByCredentials = ( username, password ) => {
   return new Promise((resolve, reject) => {
-    pool.query('SELECT * from user_login WHERE username = ? AND password = ?', [username, password], function(error, result, fields) {
+    pool.query(`SELECT * from user_login WHERE username = ? AND password = ?`, [username, password], function(error, result, fields) {
       if(error){
         return reject(error);
       }
       return resolve(result[0]);
     });
   });
+ 
+};
+
+
+userModelAndConnection.searchAllEmployee = (role_id, company_id) => {
+  if(role_id === 1 || role_id === 2){
+    return new Promise((resolve, reject) => {
+      pool.query(`Select company_id, user_id, first_name, last_name from user_information`, function(error, result, fileds){
+        if(error){
+          return reject(error);
+        }
+        return resolve(result);
+      });
+    });
+  }else{
+    return new Promise((resolve, reject) => {
+      pool.query(`Select company_id, user_id, first_name, last_name from user_information 
+      WHERE company_id = ?`,[company_id], function(error, result, fileds){
+        if(error){
+          return reject(error);
+        }
+        return resolve(result);
+      });
+    });
+  }
+  
 };
 
 userModelAndConnection.getUserProfile = (user_id) => {

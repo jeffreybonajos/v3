@@ -16,12 +16,13 @@ export const authStart = () => {
         type: AUTH_START
     };
 };
-export const authSuccess = (token, userProfile, newsFeeds) => {
+export const authSuccess = (token, userProfile, newsFeeds, searchEmployee) => {
     return {
         type: AUTH_SUCCESS,
         userData: token,
         userProfile: userProfile,
-        newsFeeds: newsFeeds
+        newsFeeds: newsFeeds,
+        searchEmployee: searchEmployee
     };
 };
 export const authFail = (error) => {
@@ -92,7 +93,7 @@ export const auth = (username, password) => {
         })
         if(response.ok){
             const res = await response.json();
-            dispatch(authSuccess(res.userData, res.userProfile, res.newsFeeds))
+            dispatch(authSuccess(res.userData, res.userProfile, res.searchEmployee, res.newsFeeds))
             if(typeof window !== 'undefined'){
                 window[WINDOW_USER_SCRIPT_VARIABLE] = res.userData || {} ;
             }

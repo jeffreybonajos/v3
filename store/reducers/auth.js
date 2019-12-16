@@ -11,6 +11,7 @@ import {
 
 const initialState = {
     token: null,
+    searchEmployee: [],
     userProfile: null,
     error: null,
     isLoading: false,
@@ -32,6 +33,7 @@ export const authStart = (state, action) => {
 export const authSuccess = (state, action) => {
     return updateObject(state, {
         token: action.userData,
+        searchEmployee: action.searchEmployee,
         userProfile: action.userProfile,
         newsFeeds: action.newsFeeds,
         error: null,

@@ -11,6 +11,7 @@ export const fetchUserData = (userProfile, userPosition, userHealthTracker, user
     ) => {
     return {
         type: FECTH_USER_DATA,
+      
         userProfile: userProfile,
         userPosition: userPosition,
         userHealthTracker: userHealthTracker,
@@ -43,6 +44,7 @@ export const getUserData = () => {
         if(response.ok){
             const res = await response.json();
             dispatch(fetchUserData(
+               
                 res.userProfile, 
                 res.userPosition, 
                 res.userHealthTracker,
