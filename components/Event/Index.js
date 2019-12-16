@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { connect } from 'react-redux'
 
 import Input from '../UI/Input';
 import Button from '../UI/Button'
+import * as actions from '../../store/actions/index';
 
 const StyledDiv = styled.div`
   margin: 0px
@@ -60,11 +61,14 @@ class AddEvent extends React.Component {
                 elementConfig: {
                     options: [
                         {value: 'hai', displayValue: 'Hai'},
+                        {value: 'hbo', displayValue: 'Homebased/Offsite'},
                         {value: 'landco', displayValue: 'Landco'},
-                        {value: 'taver', displayValue: 'Tavera'},
+                        {value: 'mts', displayValue: 'MTS'},
+                        {value: 'regus', displayValue: 'Regus'},
+                        {value: 'tavera', displayValue: 'Tavera'}
                     ]
                 },
-                value: ''
+                value: []
             },
             eventDurationTimeIn: {
                 elementType: 'input',
@@ -82,11 +86,19 @@ class AddEvent extends React.Component {
                 },
                 value: ''
             }
-        }
+        },
+        isAddingEvent: false
     }
+
+    componentDidMount () {
+        this.props.onInitBranches();
+        console.log(this.props)
+      }
+      
     eventSubmit = () => {
         event.preventDefault();
         const eventData = {};
+        this.setState({isAddingEvent: true})
         for(let formElementIndentifier in this.state.eventForm) {
             eventData[formElementIndentifier] = this.state.eventForm[formElementIndentifier].value;
         }
@@ -108,6 +120,7 @@ class AddEvent extends React.Component {
     }
 
     render(){
+        const isAddingEvent = this.state;
         const formElementsArray = [];
         for(let key in this.state.eventForm) {
             formElementsArray.push({
@@ -116,7 +129,7 @@ class AddEvent extends React.Component {
             });
         }
         let form = (
-            <form onSubmit={this.eventSubmit}>
+            <form>
                 {formElementsArray.map(formElement => (
                     <Input 
                         key={formElement.id}
@@ -127,7 +140,10 @@ class AddEvent extends React.Component {
                         label={formElement.config.elementConfig.placeholder}
                     />
                 ))}
-                <Button>Add Event</Button>
+                <Button clicked={this.eventSubmit}  
+                    disabled={this.state.isAddingEvent}>
+                    { isAddingEvent ?  'Adding Event' : 'Add Event' }</Button>
+                
             </form>
         )
         return (
@@ -140,4 +156,17 @@ class AddEvent extends React.Component {
    
 };
 
-export default AddEvent
+const mapStateToProps = state => {
+    return {
+      initBranches: state.home.initBranches,
+    }
+  }
+
+const mapDispatchToProps = dispatch => {
+return {
+    onInitBranches: () => { dispatch(actions.getInitBranches())}
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps) (AddEvent);

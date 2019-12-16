@@ -14,8 +14,7 @@ const initialState = {
     userProfile: null,
     error: null,
     isLoading: false,
-    success: null,
-    newsFeeds: []
+    success: null
 }
 
 export const updateObject = (oldObject, updatedProperties) => {
@@ -33,7 +32,6 @@ export const authSuccess = (state, action) => {
     return updateObject(state, {
         token: action.userData,
         userProfile: action.userProfile,
-        newsFeeds: action.newsFeeds,
         error: null,
         isLoading: false
     });

@@ -32,7 +32,6 @@ const Modal = (props) => (
       opacity: props.show ? '1': '0'}}
       >
       {props.children}
-      <Button clicked={props.cancelEventButton}> Close </Button>
       </StyledModal>
   </div>
 )

@@ -223,9 +223,9 @@ userModelAndConnection.UpdateUserPasswordActivated = (dateNow, user_id) => {
   })
 }
 
-userModelAndConnection.getAllNewsFeed = () => {
+userModelAndConnection.initBranch = () => {
   return new Promise((resolve, reject) => {
-    pool.query('SELECT newsfeed_posts.*, user_information.full_name, user_information.profile_picture FROM newsfeed_posts left join user_information ON user_information.user_id = newsfeed_posts.user_id', function (error, result, fields) {
+    pool.query('SELECT branch.* FROM branch', function (error, result, fields) {
       if(error){
         return reject(error)
       }
@@ -233,6 +233,74 @@ userModelAndConnection.getAllNewsFeed = () => {
     })
   })
 }
+
+userModelAndConnection.getAllNewsFeed = () => {
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT newsfeed_posts.*, user_information.full_name, user_information.profile_picture FROM newsfeed_posts left join user_information ON user_information.user_id = newsfeed_posts.user_id ORDER BY newsfeed_posts.pid desc LIMIT 20', function (error, result, fields) {
+      if(error){
+        return reject(error)
+      }
+      return resolve(result)
+    })
+  })
+}
+
+userModelAndConnection.getEventLikes = (event_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT newsfeed_likes.* FROM newsfeed_likes WHERE newsfeed_likes.pid = ?',[event_id], function (error, result, fields) {
+      if(error){
+        return reject(error)
+      }
+      return resolve(result)
+    })
+  })
+}
+
+userModelAndConnection.likeEvent = (event_id, user_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query('insert into newsfeed_likes(pid, user_id) values( pid = ?, user_id = ?)',[event_id, user_id], function (error, result, fields) {
+      if(error){
+        return reject(error)
+      }
+      return resolve(result)
+    })
+  })
+}
+
+userModelAndConnection.unlikeEvent = (event_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query('SELECT * FROM dbawesomeos.newsfeed_likes WHERE newsfeed_likes.pid = ?',[event_id], function (error, result, fields) {
+      if(error){
+        return reject(error)
+      }
+      return resolve(result)
+    })
+  })
+}
+
+userModelAndConnection.dbpostEvent = (title, start, end, url, type, duration_start, duration_end) => {
+  return new Promise((resolve, reject) => {
+    pool.query("Insert INTO calendar (title, start, end, url, type, duration_start, duration_end) VALUES (?,?,?,?,?,?,?)", [title, start, end, url, type, duration_start, duration_end], function(error, result, fields) {
+      if(error){
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+userModelAndConnection.dbEventList = () => {
+  return new Promise((resolve, reject) => {
+    pool.query("SELECT * FROM calendar", function(error, result, fields) {
+      if(error){
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+
 
 
 
