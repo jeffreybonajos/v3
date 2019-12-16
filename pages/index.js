@@ -112,9 +112,9 @@ class Index extends React.Component{
       <Layout title="Index" >
         <StyledContainer>
           <StyledContainerNewsFeed>
-            {/* <EventFeed>
+            <EventFeed>
 
-            </EventFeed> */}
+            </EventFeed>
           </StyledContainerNewsFeed>
           <StyledContainerButtonEvent>
             <div>
