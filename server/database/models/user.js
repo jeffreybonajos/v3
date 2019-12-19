@@ -315,9 +315,64 @@ userModelAndConnection.dbpostEvent = (title, start, end, url, type, duration_sta
   });
 };
 
+userModelAndConnection.dbpostEventLocation = (calendar_id, branch_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query("Insert INTO calendar_location (calendar_id, branch_id) VALUES (?,?)", [calendar_id, branch_id], function(error, result, fields) {
+      if(error){
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
 userModelAndConnection.dbEventList = () => {
   return new Promise((resolve, reject) => {
     pool.query("SELECT * FROM calendar", function(error, result, fields) {
+      if(error){
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+userModelAndConnection.dbEventById = (calendar_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query("SELECT calendar.* FROM calendar Where calendar_id = ?", [calendar_id],function(error, result, fields) {
+      if(error){
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+userModelAndConnection.dbEventLocation = (calendar_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query("select calendar_location.* from calendar_location where calendar_id = ?", [calendar_id],function(error, result, fields) {
+      if(error){
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+userModelAndConnection.dbEventDelete = (calendar_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query("DELETE FROM calendar WHERE calendar_id = ?", [calendar_id],function(error, result, fields) {
+      if(error){
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+userModelAndConnection.dbEventDeleteLocation = (calendar_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query("DELETE FROM calendar_location WHERE calendar_id = ?", [calendar_id],function(error, result, fields) {
       if(error){
         return reject(error);
       }

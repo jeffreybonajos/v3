@@ -28,7 +28,7 @@ router.post('/api/auth/login', async (req, res) => {
       company_id: userProfile.company_id,
     }
     res.cookie('token', userData, COOKIE_OPTIONS);
-    res.status(200).json({searchEmployee,userData, userProfile});
+    res.status(200).json({userData, userProfile});
   } catch(error) {
     res.json(error)
   } 
@@ -63,19 +63,32 @@ router.get('/api/auth/home', async (req, res) => {
 
 router.post('/api/home/post/event', async (req, res) => {
   try{
-    
-    const {title, start, end, url, type, duration_start, duration_end} = req.body.eventData;
-    console.log(title, start, end, url, type, duration_start, duration_end);
-    await userModel.dbpostEvent(title, start, end, url, type, duration_start, duration_end)
+    const {title, start, end, url, type, duration_start, duration_end, branches} = req.body.eventData;
+    const event = await userModel.dbpostEvent(title, start, end, url, type, duration_start, duration_end)
     if(!event) {
       res.status(400)
     }
-    res.status(200).json(event);
+    branches.forEach(async (branch) => {
+      await userModel.dbpostEventLocation(event.insertId, branch.branch_id)
+    });
+    res.status(200).json(event);  
   } catch(error) {
     res.json(error)
   } 
-    
+})
 
+router.post('/api/home/delete/event', async (req, res) => {
+  try{
+    const {calendar_id} = req.body;
+    const event = await userModel.dbEventDelete(calendar_id);
+    await userModel.dbEventDeleteLocation(calendar_id);
+    if(!event) {
+      res.status(400)
+    }
+    res.status(200).json(event);  
+  } catch(error) {
+    res.json(error)
+  } 
 })
 
 router.get('/api/auth/team', async (req, res) => {
@@ -107,6 +120,20 @@ router.get('/api/home', async (req, res) => {
   
 })
 
+router.post('/api/home/event/location', async (req, res) => {
+  try {
+    // const { signedCookies = {} } = req;
+    // const { token } = signedCookies;
+    // if(token && token.user_id){
+      const eventLocation = await userModel.dbEventLocation(req.body.calendar_id);
+      res.status(200).json({eventLocation});
+      // }
+  } catch(error) {
+    res.status(404);
+  }
+  
+})
+
 router.get('/api/home/events', async (req, res) => {
   try {
     const { signedCookies = {} } = req;
@@ -120,6 +147,8 @@ router.get('/api/home/events', async (req, res) => {
   }
   
 })
+
+
 
 router.post('/api/home/event/likes', async (req, res) => {
   try {

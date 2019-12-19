@@ -6,8 +6,10 @@ import Layout from "../components/Layout";
 import EventFeed from '../components/Index/newsFeeds';
 import Button from '../components/UI/Button';
 import Modal from '../components/UI/Modal';
-import NewEvent from  '../components/Event/newEvent'
-import Event from  '../components/Event/event'
+import NewEvent from  '../components/Event/newEvent';
+import Event from  '../components/Event/event';
+import EditEvent from '../components/Event/editEvent';
+import * as actions from '../store/actions/index';
 
 
 const StyledContainer = styled.div`
@@ -40,7 +42,6 @@ const StyledContainerNewsFeed = styled.div`
 const StyledContainerEachNewsFeed = styled.div`
 float: left;
 clear: left;
-position: relative;
 z-index: 2;
 padding: 0;
 margin-bottom: 5px;
@@ -82,7 +83,9 @@ const getFormattedDate = (date) => {
 
 class Index extends React.Component{
   state = {
-    addEvent: false
+    addEvent: false,
+    editEvent: false,
+    dataToEdit: null
   }
   eventButtonHandler = () => {
     this.setState({addEvent: true});
@@ -90,24 +93,25 @@ class Index extends React.Component{
   
   eventModalClosed = () => {
     this.setState({addEvent: false});
+    this.setState({editEvent: false});
+  }
+
+  handleEditEvent = data => {
+      this.setState({editEvent: true});
+      this.setState({dataToEdit: data})
+      this.props.onEventLocation(data.calendar_id)
+      console.log('edit/deleteData', data.calendar_id)
   }
   
-
-  checkEvenNow = () => {
-    const eventList = this.props.eventList;
-  }
-
   render(){
     const eventLists = this.props.eventList;
-    const newDate = new Date();
-    const testDate = getFormattedDate(newDate);
-    console.log('endex',testDate);
-    eventLists.map(event => { 
-        if(event.start === testDate) {
-          console.log("here");
-        }
-      }
-    )
+    const getDateNow = new Date();
+    const dateNow = getFormattedDate(getDateNow);
+    const dataToEdit = this.state.dataToEdit;
+    const eventLocation = this.props.eventLocation;
+    
+    const events = eventLists.filter(event => event.start ? event.start.includes(dateNow) : null);
+
     return (
       <Layout title="Index" >
         <StyledContainer>
@@ -120,7 +124,16 @@ class Index extends React.Component{
             <div>
               
             </div>
-            <Event></Event>
+            { events.map(event => (
+                <Event 
+                    key={event.id}
+                    event={event}
+                    handleEditEvent={this.handleEditEvent}
+                />
+        
+            ))
+            }
+            
             <Button clicked={this.eventButtonHandler}>Add Event</Button>
           </StyledContainerButtonEvent>
         </StyledContainer>
@@ -129,9 +142,19 @@ class Index extends React.Component{
           <NewEvent
              modalClosed={this.eventModalClosed}
             eventModalClosed={this.eventModalClosed}>
-
           </NewEvent>
         </Modal>
+        <Modal show={this.state.editEvent} 
+                modalClosed={this.eventModalClosed}>
+                <EditEvent
+                modalClosed={this.eventModalClosed}
+                eventModalClosed={this.eventModalClosed}
+                dataToEdit={dataToEdit}
+                eventLocation={eventLocation}
+                >
+                
+                </EditEvent>
+            </Modal>
       </Layout>
     )
   }
@@ -140,9 +163,14 @@ class Index extends React.Component{
 const mapStateToProps = state => {
     return {
       eventList: state.home.eventList,
-    }
+      eventLocation: state.home.eventLocation
   }
+}
+const mapDispatchToProps = dispatch => {
+  return {
+      onEventLocation: (calendar_id) => { dispatch(actions.getEventLocation(calendar_id))}
+    }
+}
 
-
-export default connect(mapStateToProps)(Index);
+export default connect(mapStateToProps, mapDispatchToProps)(Index);
 

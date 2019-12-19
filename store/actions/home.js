@@ -10,7 +10,9 @@ import {
     FETCH_BRANCH_FAILED,
     POST_EVENT_START,
     POST_EVENT_SUCCESS,
-    POST_EVENT_FAILED
+    POST_EVENT_FAILED,
+    FETCH_EVENT_LOCATION,
+    DELETE_EVENT_POST
 
 } from './actionTypes';
 
@@ -51,6 +53,13 @@ export const fetchInitBranches = (initBranches, eventList) => {
     }
 }
 
+export const fetchEventLocation = (eventLocation) => {
+    return {
+        type: FETCH_EVENT_LOCATION,
+        eventLocation: eventLocation
+    }
+}
+
 export const postEventStart = () => {
     return {
         type: POST_EVENT_START
@@ -64,6 +73,12 @@ export const postEventSuccess = () => {
 export const postEventFailed = () => {
     return {
         type: POST_EVENT_FAILED
+    }
+}
+
+export const deleteEventPost = () => {
+    return {
+        type: DELETE_EVENT_POST
     }
 }
 
@@ -95,7 +110,7 @@ export const postEvent = (eventData) => {
     }
 }
 
-export const getInitBranches = () => {
+export const getInitHome = () => {
     return async dispatch => {
         const response  = await fetch('http://localhost:3000/api/home', {
             method: 'GET',
@@ -111,6 +126,56 @@ export const getInitBranches = () => {
         
     };
 };
+
+export const getEventLocation = (calendar_id) => {
+    return async dispatch => {
+        const response = await fetch('/api/home/event/location', {
+            method: 'POST',
+            headers: {
+                // Check what headers the API needs. A couple of usuals right below
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                // Validation data coming from a form usually
+                calendar_id
+            })
+        })
+        if(response.ok){
+            const res = await response.json();
+            dispatch(fetchEventLocation(res.eventLocation))
+        }else {
+            dispatch(handleError(response.error))
+        }
+    };
+};
+
+export const deletePostEvent = (calendar_id) => {
+    return async dispatch => {
+        const response = await fetch('/api/home/delete/event', {
+            method: 'POST',
+            headers: {
+                // Check what headers the API needs. A couple of usuals right below
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                // Validation data coming from a form usually
+                calendar_id
+            })
+        })
+        if(response.ok){
+            const res = await response.json();
+            dispatch(deleteEventPost());
+            Router.push("/personal");
+        }else {
+            dispatch(handleError(response.error))
+        }
+    };
+};
+
+
+/* Newsfeed   */
 
 export const getHomeEvents = () => {
     return async dispatch => {

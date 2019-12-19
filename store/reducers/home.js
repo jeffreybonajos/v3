@@ -5,7 +5,8 @@ import {
     EVENT_LIKE,
     EVENT_UNLIKE,
     FETCH_BRANCH,
-    FETCH_BRANCH_FAILED
+    FETCH_BRANCH_FAILED,
+    FETCH_EVENT_LOCATION
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
     eventLikes: [],
     initBranches: [],
     eventList: [],
+    eventLocation: null,
     error: null
 }
 export const updateObject = (oldObject, updatedProperties) => {
@@ -45,10 +47,16 @@ export const eventLike = (state, action) => {
     })
 }
 
-export const fetchInitBranches = (state, action) => {
+export const fetchInitHome = (state, action) => {
     return updateObject(state, {
         initBranches: action.initBranches,
         eventList: action.eventList
+    })
+}
+
+export const fetchEventLocation = (state, action) => {
+    return updateObject(state, {
+        eventLocation: action.eventLocation
     })
 }
 
@@ -58,8 +66,9 @@ export default (state = initialState, action) => {
         case FETCH_EVENT_LIKES: return fetchEventLikes(state,action);
         case FETCH_HANDLE_ERROR: return handleError(state, action);
         case EVENT_LIKE: return eventLike(state, action);
-        case FETCH_BRANCH: return fetchInitBranches(state, action);
+        case FETCH_BRANCH: return fetchInitHome(state, action);
         case FETCH_BRANCH_FAILED: return handleError(state, action);
+        case FETCH_EVENT_LOCATION: return fetchEventLocation(state, action);
         default:
             return state;
     }

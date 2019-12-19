@@ -2,6 +2,7 @@ const express = require("express");
 const next = require("next");
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const bodyParser = require('body-parser')
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";
@@ -13,7 +14,7 @@ const COOKIE_SECRET = 'test'
 
 app.prepare().then(() => {
   const server = express();
-  
+  server.use(bodyParser.json())
   server.use(express.json())
   server.use(cookieParser(COOKIE_SECRET))
   server.use(cors())

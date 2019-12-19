@@ -13,6 +13,8 @@ export {
     getHomeEvents,
     getEventLikes,
     doEventLike,
-    getInitBranches,
-    postEvent
+    getInitHome,
+    postEvent,
+    getEventLocation,
+    deletePostEvent
 } from './home';

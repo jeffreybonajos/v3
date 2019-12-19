@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 
 import Button from '../../components/UI/Button'
 import * as actions from '../../store/actions/index';
@@ -51,59 +51,62 @@ const StyledDateContainer = styled.div`
   width: 100%;
 `;
 
-class NewEvent extends React.Component {
+class EditEvent extends React.Component {
     state = {
-        title: null,
-        start: null,
-        end: null,
-        url: null,
-        type: null,
+        title: "",
+        start: "",
+        end: "",
+        url: "",
+        type: "",
         branches: [],
-        duration_start: null,
-        duration_end: null,
+        duration_start: "",
+        duration_end: "",
+        editDatas: null,
+        checkedBranch: [],
+        isDeleting: false
     }
 
     componentDidMount () {
-        this.props.onInitHome();
-      }
+        let eventData = {};
+      eventData = this.props.dataToEdit;
+     console.log(eventData);
+     this.setState({
+         ...eventData
+     })
+     console.log(eventData);
+    }
 
     handleChange = (event) => {
-        if(event.target.type === 'checkbox'){
-            const value = event.target.name;
-            this.state.branches.push({
-                branch_id: value
-            })
-        } else {
-            const target = event.target;
-            const value = target.value;
-            const name = target.name;
-            this.setState({
-            [name]: value
-        });
-        }
-      };
-
-    handleSubmit = () => {
-        event.preventDefault();
-        let eventData = {};
-        eventData = this.state;
-
-
-        console.log(eventData);
-        this.props.onSubmitEvent(eventData);
+       
+    }
+    handleEditSubmit = () => {
+       
+    }
+    handleDeleteEvent = deleteEvent => {
+        console.log(deleteEvent.calendar_id)
+        this.props.onDeleteEvent(deleteEvent.calendar_id);
         this.props.modalClosed;
-        
+    }
+
+    checkItem = (item) => {
+
     }
 
     render(){
+        const {title,start,end,url,type,duration_start,duration_end} = this.state;
+        const isDeleting = this.state
+        const editDatas = ({} = this.props.dataToEdit || {});
+        const eventLocation = ([] = this.props.eventLocation || []);
+
         const branches = this.props.initBranches;
         const checkboxs = branches.map(branch => (
             <StyledCheckBoxContainer name={this.state.branches}>
-                <input type='checkbox' name={branch.branch_id} key={branch.branch_id}
+                <input type='checkbox' name={branch.branch_id}  key={branch.branch_id}
                 value={branch.branch_id} ref={branch.branch_id} onChange={this.handleChange}/>
                 <label>{branch.branch}</label>
             </StyledCheckBoxContainer>
         ))
+        
         return (
             <>
             <StyledForm onSubmit={this.handleSubmit}>
@@ -112,6 +115,7 @@ class NewEvent extends React.Component {
                     <StyledInput
                         type="text"
                         name="title"
+                        value={title}
                         required
                         onChange={this.handleChange}
                      />
@@ -123,6 +127,7 @@ class NewEvent extends React.Component {
                     <StyledInput 
                         type="date"
                         name="start"
+                        value={editDatas.start}
                         required
                         onChange={this.handleChange}
                         />
@@ -130,6 +135,7 @@ class NewEvent extends React.Component {
                     <StyledInput 
                         type="date" 
                         name="end"
+                        value={editDatas.end}
                         required
                         onChange={this.handleChange}
                         />
@@ -142,6 +148,7 @@ class NewEvent extends React.Component {
                     <StyledInput 
                         type="url"
                         name="url"
+                        value={editDatas.url}
                         required
                         onChange={this.handleChange}
                         />
@@ -149,7 +156,7 @@ class NewEvent extends React.Component {
 
                 <StyledInputContainer>
                     <StyledLabel>Event Type: 
-                        <select name="type"  value={this.state.type} onChange={this.handleChange}>
+                        <select name="type"  value={editDatas.type}onChange={this.handleChange}>
                             <option value="event">Event</option>
                             <option value="nid">NID</option>
                         </select>
@@ -168,19 +175,20 @@ class NewEvent extends React.Component {
                     <StyledInput 
                         type="time"
                         name="duration_start"
+                        value={editDatas.duration_start}
                         onChange={this.handleChange}
                         />
                     <StyledInput 
                         type="time"
                         name="duration_end"
+                        value={editDatas.duration_end}
                         onChange={this.handleChange}
                         />
                 </StyledInputContainer>
                 
                 <Button>Save</Button>
-                
                 </StyledForm>
-                
+                <Button clicked={() => this.handleDeleteEvent(editDatas)}>Delete</Button>
                 <Button clicked={this.props.modalClosed}>Close</Button>
             </>
         )
@@ -189,13 +197,13 @@ class NewEvent extends React.Component {
 const mapStateToProps = state => {
     return {
       initBranches: state.home.initBranches,
-    }
-  }
-
-const mapDispatchToProps = dispatch => {
-return {
-    onInitHome: () => { dispatch(actions.getInitHome())},
-    onSubmitEvent: (eventData) => { dispatch(actions.postEvent(eventData))}
+      eventLocation: state.home.eventLocation
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(NewEvent);
+const mapDispatchToProps = dispatch => {
+return {
+    onDeleteEvent: (calendar_id) => { dispatch(actions.deletePostEvent(calendar_id))}
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditEvent);
