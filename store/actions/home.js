@@ -121,7 +121,7 @@ export const getInitHome = () => {
             dispatch(fetchInitBranches(res.initBranches, res.eventList));
         } else {
             console.log(response.error)
-            dispatch(response.error)
+            dispatch(handleError(response.error))
         }
         
     };
@@ -129,7 +129,7 @@ export const getInitHome = () => {
 
 export const getEventLocation = (calendar_id) => {
     return async dispatch => {
-        const response = await fetch('/api/home/event/location', {
+        const response = await fetch('http://localhost:3000/api/home/event/location', {
             method: 'POST',
             headers: {
                 // Check what headers the API needs. A couple of usuals right below
@@ -152,7 +152,7 @@ export const getEventLocation = (calendar_id) => {
 
 export const deletePostEvent = (calendar_id) => {
     return async dispatch => {
-        const response = await fetch('/api/home/delete/event', {
+        const response = await fetch('http://localhost:3000/api/home/delete/event', {
             method: 'POST',
             headers: {
                 // Check what headers the API needs. A couple of usuals right below
@@ -188,7 +188,7 @@ export const getHomeEvents = () => {
             dispatch(fetchEvents(res.homeEvents));
         } else {
             console.log(response.error)
-            dispatch(response.error)
+            dispatch(handleError(response.error))
         }
         
     };

@@ -1,8 +1,15 @@
 import { 
     FECTH_USER_DATA,
-    FETCH_USER_TEAM
+    FETCH_USER_TEAM,
+    FETCH_HANDLE_ERROR
 } from './actionTypes';
 
+export const handleError = (error) => {
+    return {
+        type: FETCH_HANDLE_ERROR,
+        error: error
+    }
+}
 
 export const fetchUserData = (userProfile, userPosition, userHealthTracker, userTransactions, userResultDocument, userNurseVisit, userSchedule, userSalaryDetails, userIncentives,
     userHMOplan,
@@ -60,7 +67,7 @@ export const getUserData = () => {
                 ));
         } else {
             console.log(response.error)
-            dispatch(response.error)
+            dispatch(handleError(response.error))
         }
         
     };
@@ -77,7 +84,7 @@ export const getUserTeam = () => {
             dispatch(fetchUserTeam(res.userTeamMembers));
         } else {
             console.log(response.error)
-            dispatch(response.error)
+            dispatch(handleError(response.error))
         }
         
     };
