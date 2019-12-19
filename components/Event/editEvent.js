@@ -115,7 +115,7 @@ class EditEvent extends React.Component {
                     <StyledInput
                         type="text"
                         name="title"
-                        value={title}
+                        value={editDatas.title}
                         required
                         onChange={this.handleChange}
                      />
