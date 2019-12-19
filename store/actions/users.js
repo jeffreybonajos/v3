@@ -44,7 +44,7 @@ export const fetchUserTeam = (userTeamMembers) => {
 
 export const getUserData = () => {
     return async dispatch => {
-        const response  = await fetch('http://localhost:3000/api/auth/home', {
+        const response  = await fetch('/api/auth/home', {
             method: 'GET',
             credentials: 'same-origin'
         })
@@ -75,7 +75,7 @@ export const getUserData = () => {
 
 export const getUserTeam = () => {
     return async dispatch => {
-        const response  = await fetch('http://localhost:3000/api/auth/team', {
+        const response  = await fetch('/api/auth/team', {
             method: 'GET',
             credentials: 'same-origin'
         })

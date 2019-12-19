@@ -86,7 +86,7 @@ export const postEvent = (eventData) => {
     return async dispatch => {
         console.log(eventData);
         dispatch(postEventStart());
-        const response = await fetch('http://localhost:3000/api/home/post/event', {
+        const response = await fetch('/api/home/post/event', {
             method: 'POST',
             headers: {
                 // Check what headers the API needs. A couple of usuals right below
@@ -112,7 +112,7 @@ export const postEvent = (eventData) => {
 
 export const getInitHome = () => {
     return async dispatch => {
-        const response  = await fetch('http://localhost:3000/api/home', {
+        const response  = await fetch('/api/home', {
             method: 'GET',
             credentials: 'same-origin'
         })
@@ -129,7 +129,7 @@ export const getInitHome = () => {
 
 export const getEventLocation = (calendar_id) => {
     return async dispatch => {
-        const response = await fetch('http://localhost:3000/api/home/event/location', {
+        const response = await fetch('/api/home/event/location', {
             method: 'POST',
             headers: {
                 // Check what headers the API needs. A couple of usuals right below
@@ -152,7 +152,7 @@ export const getEventLocation = (calendar_id) => {
 
 export const deletePostEvent = (calendar_id) => {
     return async dispatch => {
-        const response = await fetch('http://localhost:3000/api/home/delete/event', {
+        const response = await fetch('/api/home/delete/event', {
             method: 'POST',
             headers: {
                 // Check what headers the API needs. A couple of usuals right below
@@ -179,7 +179,7 @@ export const deletePostEvent = (calendar_id) => {
 
 export const getHomeEvents = () => {
     return async dispatch => {
-        const response  = await fetch('http://localhost:3000/api/home/events', {
+        const response  = await fetch('/api/home/events', {
             method: 'GET',
             credentials: 'same-origin'
         })
@@ -196,7 +196,7 @@ export const getHomeEvents = () => {
 
 export const getEventLikes = (event_id) => {
     return async dispatch => {
-        const response  = await fetch('http://localhost:3000/api/home/event/likes', {
+        const response  = await fetch('/api/home/event/likes', {
             method: 'POST',
             headers: {
                 // Check what headers the API needs. A couple of usuals right below
@@ -221,7 +221,7 @@ export const getEventLikes = (event_id) => {
 
 export const doEventLike = (event_id, user_id) => {
     return async dispatch => {
-        const response  = await fetch('http://localhost:3000/api/home/event/like', {
+        const response  = await fetch('/api/home/event/like', {
             method: 'PUT',
             headers: {
                 // Check what headers the API needs. A couple of usuals right below
