@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import Button from '../../components/UI/Button'
 import * as actions from '../../store/actions/index';
+import Checkbox from '../UI/Checkbox'
 
 const StyledInput = styled.input`
 font-family: "Roboto",sans-serif;
@@ -73,6 +74,11 @@ class NewEvent extends React.Component {
             this.state.branches.push({
                 branch_id: value
             })
+        } else if(event.target.type === 'select'){
+            const value = event.target.value;
+            this.state.type.push({
+                value
+            })
         } else {
             const target = event.target;
             const value = target.value;
@@ -81,7 +87,7 @@ class NewEvent extends React.Component {
             [name]: value
         });
         }
-      };
+      }
 
     handleSubmit = () => {
         event.preventDefault();
@@ -95,10 +101,10 @@ class NewEvent extends React.Component {
         
     }
 
-    render(){
+    render (){
         const branches = this.props.initBranches;
         const checkboxs = branches.map(branch => (
-            <StyledCheckBoxContainer name={this.state.branches}>
+            <StyledCheckBoxContainer>
                 <input type='checkbox' name={branch.branch_id} key={branch.branch_id}
                 value={branch.branch_id} ref={branch.branch_id} onChange={this.handleChange}/>
                 <label>{branch.branch}</label>
@@ -182,7 +188,7 @@ class NewEvent extends React.Component {
                 </StyledForm>
                 
                 <Button clicked={this.props.modalClosed}>Close</Button>
-            </>
+                </>
         )
     }
 }

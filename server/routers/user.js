@@ -125,8 +125,8 @@ router.post('/api/home/event/location', async (req, res) => {
     // const { signedCookies = {} } = req;
     // const { token } = signedCookies;
     // if(token && token.user_id){
-      const eventLocation = await userModel.dbEventLocation(req.body.calendar_id);
-      res.status(200).json({eventLocation});
+      const eventToEdit = await userModel.dbEventToEdit(req.body.calendar_id);
+      res.status(200).json({eventToEdit});
       // }
   } catch(error) {
     res.status(404);

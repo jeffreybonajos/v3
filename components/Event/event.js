@@ -12,6 +12,7 @@ import EditEvent from './editEvent'
 class Event extends React.Component {
 
     render(){
+        console.log('event',this.props)
         const eventLocation = this.props.eventLocation;
         const handleEditEvent = this.props.handleEditEvent;
         const event = this.props.event;
@@ -25,7 +26,7 @@ class Event extends React.Component {
                 </Button>
             </div>
         )
-    }
+    } 
 }
 
 const mapStateToProps = state => {

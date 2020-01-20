@@ -7,7 +7,7 @@ float: left;
 clear: left;
 position: relative;
 z-index: 2;
-padding: 10px;
+padding: 10px 0px;
 margin-bottom: 5px;
 background: #fff;
 box-shadow: 1px 2px 5px 0px rgba(0, 0, 0, .08);

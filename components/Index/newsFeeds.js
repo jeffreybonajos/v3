@@ -6,12 +6,9 @@ import Event from '../Index/newsFeed';
 import * as actions from '../../store/actions/index';
 
 const StyledContainerNewsFeed = styled.div`
-  width: 100%;
   float: left;
   position: relative;
-    min-height: 1px;
-    padding-right: 15px;
-    padding-left: 15px;
+min-height: 1px;
 `;
 
 class EventFeed extends React.Component {
@@ -25,32 +22,25 @@ class EventFeed extends React.Component {
 
     handleDeleteEvent = deletedEvent => {
         this.setState({isDeleting: true})
-        console.log('edit/deleteData', deletedEvent)
     }
 
     handleToggleLike = toggleLike => {
-        console.log('LikeToggle', toggleLike)
         const user_id = this.props.auth.user_id
         const  event_id  = toggleLike
         this.props.onEventLikes(event_id);
-        console.log('eventlikes', this.props.eventLikes);
-        console.log('user_id', user_id);
         const isEventLiked = this.props.eventLikes.includes(user_id)
 
         const sendRequest = isEventLiked ? this.props.onEventLike : this.props.onEventLike;
 
         // sendRequest(event_id, user_id);
-        console.log(isEventLiked);
-        console.log(sendRequest);
 
     }
 
     render(){
         const auth = this.props.auth
         const events = this.props.events
-        console.log(events);
         return(
-            <StyledContainerNewsFeed><h1>News Feed</h1>
+            <StyledContainerNewsFeed>
             { events.map(event => (
                 <Event 
                     key={event.id}

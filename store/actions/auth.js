@@ -125,7 +125,6 @@ export const updatePassword = (new_password, user_id) => {
         if(response.ok){
             const res = await response.json();
             dispatch(updateSuccess(res.success))
-            console.log(res);
             Router.push("/");
         }else {
             dispatch(updateFailure(response.error))

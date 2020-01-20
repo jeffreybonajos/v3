@@ -15,6 +15,6 @@ export {
     doEventLike,
     getInitHome,
     postEvent,
-    getEventLocation,
+    getEventToEdit,
     deletePostEvent
 } from './home';

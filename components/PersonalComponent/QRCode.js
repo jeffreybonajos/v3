@@ -16,7 +16,7 @@ const StyledImg = styled.img`
 const qrCode = () => (
   <StyledContainer>
     <StyledContent>
-      <StyledImg src="/static/static-qr.png" alt="Qr" />
+      <StyledImg src="/local/static/static-qr.png" alt="Qr" />
     </StyledContent>
   </StyledContainer>
 );

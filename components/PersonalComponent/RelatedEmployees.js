@@ -38,12 +38,12 @@ const relatedEmployees = props => (
       <span>Related Employees</span>
     </StyledHeader>
     <StyledContent>
-      <StyledImg src="/static/default-profile.png" alt="Profile" />
-      <StyledImg src="/static/default-profile.png" alt="Profile" />
-      <StyledImg src="/static/default-profile.png" alt="Profile" />
-      <StyledImg src="/static/default-profile.png" alt="Profile" />
-      <StyledImg src="/static/default-profile.png" alt="Profile" />
-      <StyledImg src="/static/default-profile.png" alt="Profile" />
+      <StyledImg src="/local/static/default-profile.png" alt="Profile" />
+      <StyledImg src="/local/static/default-profile.png" alt="Profile" />
+      <StyledImg src="/local/static/default-profile.png" alt="Profile" />
+      <StyledImg src="/local/static/default-profile.png" alt="Profile" />
+      <StyledImg src="/local/static/default-profile.png" alt="Profile" />
+      <StyledImg src="/local/static/default-profile.png" alt="Profile" />
     </StyledContent>
   </StyledContainer>
 );

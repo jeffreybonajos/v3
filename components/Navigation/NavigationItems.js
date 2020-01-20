@@ -102,7 +102,7 @@ const StyledDropdownContent = styled.div`
   text-decoration: none;
   position: absolute;
   width: 150px;
-  z-index: 2;
+  z-index: 600;
   border: 1px solid rgba(0, 0, 0, 0.04);
   box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
 `;

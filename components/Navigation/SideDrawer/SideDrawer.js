@@ -20,7 +20,7 @@ const StyledFooter = styled.div`
 const StyledSideNav = styled.div`
   height: 100vh;
   font-family: "Raleway", sans-serif;
-  margin-top: 86px;
+  margin-top: 75px;
   position: fixed;
   list-style: none;
   display: flex;
@@ -28,13 +28,13 @@ const StyledSideNav = styled.div`
   align-items: center;
   top: 0;
   bottom: 0;
-  z-index: 90;
+  z-index: 0;
   overflow-y: auto;
   overflow-x: hidden;
   margin-bottom: 100px;
   background: #f2f2f2;
-  width: 14%;
-  margin-left: 80px;
+  width: 16%;
+  margin-left: 45px;
 `;
 const StyledDropdownContent = styled.div`
   color: black;

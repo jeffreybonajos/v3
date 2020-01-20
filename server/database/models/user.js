@@ -348,13 +348,13 @@ userModelAndConnection.dbEventById = (calendar_id) => {
   });
 };
 
-userModelAndConnection.dbEventLocation = (calendar_id) => {
+userModelAndConnection.dbEventToEdit = (calendar_id) => {
   return new Promise((resolve, reject) => {
-    pool.query("select calendar_location.* from calendar_location where calendar_id = ?", [calendar_id],function(error, result, fields) {
+    pool.query("SELECT calendar.*, GROUP_CONCAT(DISTINCT CONCAT(calendar_location.branch_id)) as branches FROM calendar INNER JOIN calendar_location ON calendar.calendar_id = calendar_location.calendar_id where calendar.calendar_id = ?", [calendar_id],function(error, result, fields) {
       if(error){
         return reject(error);
       }
-      return resolve(result);
+      return resolve(result[0]);
     });
   });
 };
@@ -380,6 +380,7 @@ userModelAndConnection.dbEventDeleteLocation = (calendar_id) => {
     });
   });
 };
+
 
 
 

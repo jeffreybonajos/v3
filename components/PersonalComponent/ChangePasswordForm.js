@@ -82,7 +82,6 @@ class ChangePassword extends React.Component {
       user_id
     }
     this.props.onUpdatePass(newPassword, user_id);
-    console.log(data);
     
   }
 

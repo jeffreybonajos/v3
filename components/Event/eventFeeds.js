@@ -8,7 +8,7 @@ import * as actions from '../../store/actions/index';
 import Modal from '../../components/UI/Modal';
 import Event from  './event'
 import EditEvent from './editEvent'
-import NewEvent from './NewEvent'
+import NewEvent from './newEvent'
 
 
 const getFormattedDate = (date) => {
@@ -21,10 +21,21 @@ const getFormattedDate = (date) => {
 
 class EventFeed extends React.Component {
      state = {
-    addEvent: false,
-    editEvent: false,
-    dataToEdit: null
+        title: null,
+        start: null,
+        end: null,
+        url: null,
+        type: null,
+        branches: [],
+        duration_start: null,
+        duration_end: null,
+        events: [],
+        addEvent: false,
+        editEvent: false,
+        dataToEdit: null,
+        branchesToEdit: null
   }
+
   eventButtonHandler = () => {
     this.setState({addEvent: true});
   }
@@ -35,9 +46,39 @@ class EventFeed extends React.Component {
   }
 
   handleEditEvent = data => {
-      this.setState({editEvent: true});
-      this.setState({dataToEdit: data})
-      this.props.onEventLocation(data.calendar_id)
+    this.setState({editEvent: true});
+    this.setState({dataToEdit: data})
+    this.props.onEventToEdit(data.calendar_id);
+    // const branches = this.props.onEventLocation(data.calendar_id);
+    // this.setState({branchesToEdit: branches})
+  }
+
+  handleDeleteEvent = data => {
+      this.props.onDeleteEvent(data);
+      this.setState({editEvent: false});
+  }
+
+  handleEditChange = (event) => {
+    let inputValue;
+    if(event.target.type === 'checkbox'){
+      inputValue = event.target.value;
+      this.state.branches.push({
+        branch_id: inputValue
+      })
+    }else {
+      inputValue = event.target.value;
+    }
+    this.setState({[event.target.name]: inputValue})
+    console.log(this.state)
+    
+  }
+
+  handleEditBranchChange = () => {
+        
+    console.log(this.state)
+  }
+  handleEditSubmit = () => {
+
   }
   
   render(){
@@ -48,18 +89,17 @@ class EventFeed extends React.Component {
     
     const events = eventLists.filter(event => event.start ? event.start.includes(dateNow) : null);
     const eventLocation = this.props.eventLocation;
-    const handleEditEvent = this.props.handleEditEvent;
     return (
         <div>
-        { events.map(event => (
-            <Event 
-                key={event.id}
-                event={event}
-                handleEditEvent={this.handleEditEvent}
-            />
-    
-        ))
-        }
+          { events.map(event => (
+              <Event 
+                  key={event.id}
+                  event={event}
+                  handleEditEvent={this.handleEditEvent}
+              />
+      
+          ))
+          }
         
         <Button clicked={this.eventButtonHandler}>Add Event</Button>
 
@@ -76,6 +116,11 @@ class EventFeed extends React.Component {
                 modalClosed={this.eventModalClosed}
                 eventModalClosed={this.eventModalClosed}
                 dataToEdit={dataToEdit}
+                handleDeleteEvent={this.handleDeleteEvent}
+                handleEditSubmit={this.handleEditSubmit}
+                handleEditChange = {this.handleEditChange}
+                eventLocation={eventLocation}
+                handleEditBranchChange={this.handleEditBranchChange}
                 >
                 
                 </EditEvent>
@@ -87,13 +132,13 @@ class EventFeed extends React.Component {
 
 const mapStateToProps = state => {
     return {
-    eventList: state.home.eventList,
-      eventLocation: state.home.eventLocation
+    eventList: state.home.eventList
     }
   }
 const mapDispatchToProps = dispatch => {
 return {
-    onEventLocation: (calendar_id) => { dispatch(actions.getEventLocation(calendar_id))}
+    onEventToEdit: (calendar_id) => { dispatch(actions.getEventToEdit(calendar_id))},
+    onDeleteEvent: (calendar_id) => { dispatch(actions.deletePostEvent(calendar_id))}
     }
 }
 

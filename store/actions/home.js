@@ -11,7 +11,7 @@ import {
     POST_EVENT_START,
     POST_EVENT_SUCCESS,
     POST_EVENT_FAILED,
-    FETCH_EVENT_LOCATION,
+    FETCH_EVENT_TO_EDIT,
     DELETE_EVENT_POST
 
 } from './actionTypes';
@@ -53,10 +53,10 @@ export const fetchInitBranches = (initBranches, eventList) => {
     }
 }
 
-export const fetchEventLocation = (eventLocation) => {
+export const fetchEventToEdit = (eventToEdit) => {
     return {
-        type: FETCH_EVENT_LOCATION,
-        eventLocation: eventLocation
+        type: FETCH_EVENT_TO_EDIT,
+        eventToEdit: eventToEdit
     }
 }
 
@@ -84,7 +84,6 @@ export const deleteEventPost = () => {
 
 export const postEvent = (eventData) => {
     return async dispatch => {
-        console.log(eventData);
         dispatch(postEventStart());
         const response = await fetch('/api/home/post/event', {
             method: 'POST',
@@ -127,7 +126,7 @@ export const getInitHome = () => {
     };
 };
 
-export const getEventLocation = (calendar_id) => {
+export const getEventToEdit = (calendar_id) => {
     return async dispatch => {
         const response = await fetch('/api/home/event/location', {
             method: 'POST',
@@ -143,7 +142,7 @@ export const getEventLocation = (calendar_id) => {
         })
         if(response.ok){
             const res = await response.json();
-            dispatch(fetchEventLocation(res.eventLocation))
+            dispatch(fetchEventToEdit(res.eventToEdit))
         }else {
             dispatch(handleError(response.error))
         }
@@ -167,7 +166,6 @@ export const deletePostEvent = (calendar_id) => {
         if(response.ok){
             const res = await response.json();
             dispatch(deleteEventPost());
-            Router.push("/personal");
         }else {
             dispatch(handleError(response.error))
         }

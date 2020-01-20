@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import Button from '../../components/UI/Button'
 import * as actions from '../../store/actions/index';
+import Checkbox from '../UI/Checkbox';
 
 const StyledInput = styled.input`
 font-family: "Roboto",sans-serif;
@@ -53,56 +54,55 @@ const StyledDateContainer = styled.div`
 
 class EditEvent extends React.Component {
     state = {
-        title: "",
-        start: "",
-        end: "",
-        url: "",
-        type: "",
+        title: '',
+        start: '',
+        end: '',
+        url: '',
+        type: '',
         branches: [],
-        duration_start: "",
-        duration_end: "",
-        editDatas: null,
-        checkedBranch: [],
-        isDeleting: false
+        duration_start: '',
+        duration_end: '',
     }
-
-    componentDidMount () {
-        let eventData = {};
-      eventData = this.props.dataToEdit;
-     console.log(eventData);
-     this.setState({
-         ...eventData
-     })
-     console.log(eventData);
-    }
-
     handleChange = (event) => {
-       
-    }
-    handleEditSubmit = () => {
-       
-    }
-    handleDeleteEvent = deleteEvent => {
-        console.log(deleteEvent.calendar_id)
-        this.props.onDeleteEvent(deleteEvent.calendar_id);
-        this.props.modalClosed;
-    }
+        let inputValue = event.target.value;
+        if(event.target.type === 'checkbox'){
+            inputValue = event.target.value;
+            this.state.branches.push({
+                branch_id: inputValue
+            })
+        } else {
+            inputValue = event.target.value
+        }
+        console.log(inputValue)
+        this.setState({
+            [event.target.name]: inputValue
+        });
+        console.log(this.state)
+        }
 
-    checkItem = (item) => {
-
+    handleSubmit = (event) => {
+        event.preventDefault();
+        let eventDatas = this.props.eventToEdit.map(data => {
+            this.setState({
+                data
+            })
+        })
+    console.log(eventDatas)
     }
-
+    
     render(){
-        const {title,start,end,url,type,duration_start,duration_end} = this.state;
-        const isDeleting = this.state
-        const editDatas = ({} = this.props.dataToEdit || {});
-        const eventLocation = ([] = this.props.eventLocation || []);
-
-        const branches = this.props.initBranches;
-        const checkboxs = branches.map(branch => (
-            <StyledCheckBoxContainer name={this.state.branches}>
-                <input type='checkbox' name={branch.branch_id}  key={branch.branch_id}
-                value={branch.branch_id} ref={branch.branch_id} onChange={this.handleChange}/>
+        console.log(this.props.eventToEdit)
+        const { calendar_id, title,start,end,url,type,duration_start,duration_end, branches }  = ({} = this.props.eventToEdit || {});
+        const {handleEditSubmit, handleDeleteEvent, modalClosed, handleEditBranchChange} = this.props;
+        // const eventLocation = ([] = this.props.eventLocation || []);
+        console.log(branches);
+        const initBranches = this.props.initBranches;
+        const checkboxs = initBranches.map(branch => (
+            <StyledCheckBoxContainer>
+                
+                {/* <Checkbox label={branch.branch_id} clicked={handleEditBranchChange} /> */}
+                <input type='checkbox' name={branch.branch}  key={branch.branch_id} 
+                 value={branch.branch_id} onChange={this.handleChange} />
                 <label>{branch.branch}</label>
             </StyledCheckBoxContainer>
         ))
@@ -110,86 +110,86 @@ class EditEvent extends React.Component {
         return (
             <>
             <StyledForm onSubmit={this.handleSubmit}>
-                <StyledInputContainer>
-                    <StyledLabel>Event Title: </StyledLabel>
-                    <StyledInput
-                        type="text"
-                        name="title"
-                        value={editDatas.title}
-                        required
-                        onChange={this.handleChange}
-                     />
-                </StyledInputContainer>
+                    <StyledInputContainer>
+                        <StyledLabel>Event Title: </StyledLabel>
+                        <StyledInput
+                            type="text"
+                            name="title"
+                            value={title}
+                            required
+                            onChange={this.handleEditChange}
+                        />
+                    </StyledInputContainer>
 
-                <StyledInputContainer>
-                    <StyledDateContainer>
-                    <StyledLabel>Event Date: </StyledLabel>
-                    <StyledInput 
-                        type="date"
-                        name="start"
-                        value={editDatas.start}
-                        required
-                        onChange={this.handleChange}
-                        />
-                    {/* <StyledLabel>Event Date End: </StyledLabel> */}
-                    <StyledInput 
-                        type="date" 
-                        name="end"
-                        value={editDatas.end}
-                        required
-                        onChange={this.handleChange}
-                        />
-                    </StyledDateContainer>
-                </StyledInputContainer>
-                
-                
-                <StyledInputContainer>
-                    <StyledLabel>Event URL: </StyledLabel>
-                    <StyledInput 
-                        type="url"
-                        name="url"
-                        value={editDatas.url}
-                        required
-                        onChange={this.handleChange}
-                        />
-                </StyledInputContainer>
+                    <StyledInputContainer>
+                        <StyledDateContainer>
+                        <StyledLabel>Event Date: </StyledLabel>
+                        <StyledInput 
+                            type="date"
+                            name="start"
+                            value={start}
+                            required
+                            onChange={this.handleEditChange}
+                            />
+                        {/* <StyledLabel>Event Date End: </StyledLabel> */}
+                        <StyledInput 
+                            type="date" 
+                            name="end"
+                            value={end}
+                            required
+                            onChange={this.handleEditChange}
+                            />
+                        </StyledDateContainer>
+                    </StyledInputContainer>
+                    
+                    
+                    <StyledInputContainer>
+                        <StyledLabel>Event URL: </StyledLabel>
+                        <StyledInput 
+                            type="url"
+                            name="url"
+                            value={url}
+                            required
+                            onChange={this.handleEditChange}
+                            />
+                    </StyledInputContainer>
 
-                <StyledInputContainer>
-                    <StyledLabel>Event Type: 
-                        <select name="type"  value={editDatas.type}onChange={this.handleChange}>
-                            <option value="event">Event</option>
-                            <option value="nid">NID</option>
-                        </select>
-                    </StyledLabel>
-                </StyledInputContainer>
+                    <StyledInputContainer>
+                        <StyledLabel>Event Type: 
+                            <select name="type"  value={type} onChange={this.handleEditChange}>
+                                <option value="event">Event</option>
+                                <option value="nid">NID</option>
+                            </select>
+                        </StyledLabel>
+                    </StyledInputContainer>
 
-                <StyledInputContainer>
-                    <StyledLabel>Locations</StyledLabel>
-                    <StyledCheckBoxContainer>
-                        {checkboxs}
-                    </StyledCheckBoxContainer>
-                </StyledInputContainer>
+                    <StyledInputContainer>
+                        <StyledLabel>Locations</StyledLabel>
+                        <StyledCheckBoxContainer>
+                            {checkboxs}
+                        </StyledCheckBoxContainer>
+                    </StyledInputContainer>
 
-                <StyledInputContainer>
-                    <label>Event Duration: </label>
-                    <StyledInput 
-                        type="time"
-                        name="duration_start"
-                        value={editDatas.duration_start}
-                        onChange={this.handleChange}
-                        />
-                    <StyledInput 
-                        type="time"
-                        name="duration_end"
-                        value={editDatas.duration_end}
-                        onChange={this.handleChange}
-                        />
+                    <StyledInputContainer>
+                        <label>Event Duration: </label>
+                        <StyledInput 
+                            type="time"
+                            name="duration_start"
+                            value={duration_start}
+                            onChange={this.handleEditChange}
+                            />
+                        <StyledInput 
+                            type="time"
+                            name="duration_end"
+                            value={duration_end}
+                            onChange={this.handleEditChange}
+                            />
                 </StyledInputContainer>
                 
                 <Button>Save</Button>
                 </StyledForm>
-                <Button clicked={() => this.handleDeleteEvent(editDatas)}>Delete</Button>
-                <Button clicked={this.props.modalClosed}>Close</Button>
+                <Button clicked={() => handleDeleteEvent(calendar_id)}>Delete</Button>
+                <Button clicked={modalClosed}>Close</Button>
             </>
         )
     }
@@ -197,13 +197,13 @@ class EditEvent extends React.Component {
 const mapStateToProps = state => {
     return {
       initBranches: state.home.initBranches,
-      eventLocation: state.home.eventLocation
+      eventToEdit: state.home.eventToEdit
     }
 }
 const mapDispatchToProps = dispatch => {
-return {
-    onDeleteEvent: (calendar_id) => { dispatch(actions.deletePostEvent(calendar_id))}
+    return {
+        onEventToEdit: (calendar_id) => { dispatch(actions.getEventToEdit(calendar_id))}
+        }
     }
-}
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditEvent);

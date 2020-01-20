@@ -17,7 +17,7 @@ const StyledDiv = styled.div`
 
 const ImgContainer = styled.div`
   background-color: #fff;
-  height: 230px;
+  min-height: 122px;
   width: 100%;
   text-align: center;
 `;
@@ -52,14 +52,15 @@ const url = 'https://awesomev3.s3-ap-southeast-1.amazonaws.com/pp/';
 const userinfo = ({userProfile}) => (
   <StyledDiv>
       <ImgContainer>
-        <StyledImg src={`https://awesomev3.s3-ap-southeast-1.amazonaws.com/pp/${userProfile.profile_picture}`} alt="Profile" />
+        <StyledImg src={userProfile.profile_picture ? url + userProfile.profile_picture : url + 'default-profile.png'} 
+        alt="Profile" />
       </ImgContainer>
     <StyledInfo>
       <span>{userProfile.full_name}</span>
       <br />
       <span>{userProfile.position}</span>
     <StyledLogout onClick={logOutUser}>
-      <StyledLogoutIcon src="/static/logout.png" alt="Logout" /> Logout
+      <StyledLogoutIcon src="/static/logout.png" /> Logout
     </StyledLogout>
     </StyledInfo>
   </StyledDiv>
