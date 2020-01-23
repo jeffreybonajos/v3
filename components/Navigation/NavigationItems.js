@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux'
-
 import Link from "next/link";
 import styled from "styled-components";
 import { logOutUser } from "../../lib/Auth";
 import * as actions from '../../store/actions/index';
+import SearchEmployee from '../../components/PersonalComponent/SearchEmployee'
+
 
 const StyleUL = styled.ul`
   margin: 0;
@@ -113,18 +114,23 @@ class NavigationItems extends Component {
     open: false,
     show: false,
     search: '',
+    employee_id:''
 
   };
   changeHandler = event => {
 
     this.setState({ search: event.target.value});
     this.setState({show: true})
-    // this.setState(state => {
-    //   return {
-    //     show: !state.show
-    //   };
-    // });
+    
 
+  }
+  onClickHandler = (names) => {
+    event.preventDefault();
+    this.props.onSearch(names.user_id)
+    console.log('emp', names.user_id);
+    // this.setState({employee_id: names.user_id});
+    // console.log('info', names)
+    // console.log('user_id', names.user_id)
   }
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside);
@@ -139,10 +145,13 @@ class NavigationItems extends Component {
     ) {
       this.setState({
         open: false,
-        // show: false
+        show: false,
       });
+      
     }
   };
+
+
 
   handleLogout = () => { 
     this.props.onLogout();
@@ -152,6 +161,8 @@ class NavigationItems extends Component {
     const searchEmployees = ([] = this.props.searchEmployees || []);
     const userProfile  = ({} = this.props.userProfile || {});
     
+    
+      
     // const full_name = searchEmployees.map((searchEmployee) =>
     //     console.log(searchEmployee.first_name + " "  + searchEmployee.last_name)
     // )
@@ -160,17 +171,26 @@ class NavigationItems extends Component {
     const handlerButtonClick = () => {
       this.setState(state => {
         return {
-          open: !state.open
+          open: !state.open,
+         
         };
       });
     };
+
+    // const handlerButtonClickSearch = () => {
+    //   this.setState(state => {
+    //     return {
+    //       show: !state.show
+    //     };
+    //   });
+    // };
 
     return (
       <nav>
         <StyleUL>
           <StyledLI>
               <StyledDropdown ref={this.container}>
-                <StyledA>
+                <StyledA >
                   <StyledInput
                     value = {this.state.search}
                     name="search"
@@ -181,26 +201,31 @@ class NavigationItems extends Component {
                   </StyledInput>
                 </StyledA>
                  {this.state.show && (
-                <Link href="/personal">
-                  <StyledDropdownContent id="myDropdown1">
-                  {filteredNames.slice(0, 10).map((names, index) =>(
-                          <StyledAFiltered key={index}>
-                            {names.first_name + " " + names.last_name}
-                          </StyledAFiltered>
-                      
-                      ))}
-                  </StyledDropdownContent>
-                </Link>
+                 
+                <StyledDropdownContent>
+                      {filteredNames.slice(0, 10).map((names) =>(
+                     <Link href="/searchemployee">
+                              <StyledAFiltered key={names.user_id} onClick={() => this.onClickHandler(names)}>
+                                 
+                                  {names.first_name + " " + names.last_name}
+                              </StyledAFiltered>
+                     </Link> 
+                          ))}
+                   
+                      </StyledDropdownContent>
                 )} 
+                {/* <SearchEmployee
+                  data = {this.state.employee_id}
+              />   */}
               </StyledDropdown>
-            <StyledDropdown ref={this.container}>
+            <StyledDropdown >
               <StyledA onClick={handlerButtonClick}>
                 {userProfile.full_name}
               </StyledA>
               {this.state.open && (
                 <StyledDropdownContent id="myDropdown">
                   <Link href="/personal">
-              <StyledA>personal</StyledA>
+              <StyledA>Personal</StyledA>
                   </Link>
                   <StyledA onClick={this.handleLogout}>Logout</StyledA>
                 </StyledDropdownContent>
@@ -223,9 +248,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLogout: () => dispatch(actions.actLogout())
-
-    
+    onLogout: () => dispatch(actions.actLogout()),
+    onSearch: (employee_user_id) => dispatch(actions.search(employee_user_id))
+  
   };
 };
 

@@ -9,6 +9,7 @@ const COOKIE_OPTIONS = {
 }
 
 
+
 router.post('/api/auth/login', async (req, res) => {
   try{
     const user  = await userModel.findByCredentials(req.body.username, req.body.password)
@@ -35,6 +36,19 @@ router.post('/api/auth/login', async (req, res) => {
     
 
 })
+
+router.post('/api/auth/search_employee', async (req, res) => {
+  try{
+    const searchSpecificEmployee = await userModel.getSpecificEmployee(req.body.employee_user_id)
+    console.log(searchSpecificEmployee.user_id)
+    res.status(200).json({searchSpecificEmployee});
+    console.log(userData1)
+  }catch(error){
+    res.status(404);
+  }
+})
+
+
 
 router.get('/api/auth/home', async (req, res) => {
   try {
@@ -192,6 +206,8 @@ router.post('/api/auth/update_password', async (req, res) => {
   }
   
 })
+
+
 
 router.post('/api/auth/logout', async (req, res) => {
   res.clearCookie('token', COOKIE_OPTIONS);

@@ -42,6 +42,7 @@ export const fetchUserTeam = (userTeamMembers) => {
     
 }
 
+
 export const getUserData = () => {
     return async dispatch => {
         const response  = await fetch('/api/auth/home', {
