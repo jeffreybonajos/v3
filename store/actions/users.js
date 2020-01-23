@@ -1,6 +1,7 @@
 import { 
     FECTH_USER_DATA,
-    FETCH_USER_TEAM
+    FETCH_USER_TEAM,
+  
 } from './actionTypes';
 
 
@@ -34,6 +35,7 @@ export const fetchUserTeam = (userTeamMembers) => {
     }
     
 }
+
 
 export const getUserData = () => {
     return async dispatch => {

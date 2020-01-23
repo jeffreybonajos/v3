@@ -30,9 +30,7 @@ class profile extends React.Component {
   render(){
     const userProfile = ({} = this.props.userProfile || {});
     const userPosition = ({} = this.props.userPosition || {});
-  
    
-  
     return (
       <StyledContainer>
         <StyledTable>
@@ -45,7 +43,7 @@ class profile extends React.Component {
           </tr>
           <tr>
             <StyledTd>Gender</StyledTd>
-            <StyledTd>{userProfile.gender}</StyledTd>
+            <StyledTd>{userProfile.branch_site}</StyledTd>
           </tr>
           <tr>
             <StyledTd>Address</StyledTd>

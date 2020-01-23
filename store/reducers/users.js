@@ -1,6 +1,7 @@
 import {
     FECTH_USER_DATA,
-    FETCH_USER_TEAM
+    FETCH_USER_TEAM,
+  
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -8,6 +9,7 @@ const initialState = {
     userPosition: null,
     userHealthTracker: null,
     userTeamMembers: [],
+    searchEmployee: null,
     userTransactions: [],
     userResultDocument: [],
     userNurseVisit: [],
@@ -51,6 +53,8 @@ export const fetchUserTeam = (state, action) => {
         userTeamMembers: action.userTeamMembers
     });
 }
+
+
 
 
 export default (state = initialState, action) => {
