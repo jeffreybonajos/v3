@@ -186,10 +186,10 @@ class NavigationItems extends Component {
     // };
 
     return (
-      <nav>
+      <nav ref={this.container}>
         <StyleUL>
           <StyledLI>
-              <StyledDropdown ref={this.container}>
+              <StyledDropdown >
                 <StyledA >
                   <StyledInput
                     value = {this.state.search}
