@@ -229,20 +229,9 @@ userModelAndConnection.UpdateUserPassword = (new_password, user_id) => {
 
 userModelAndConnection.getSpecificEmployee = (employee_user_id) => {
   return new Promise((resolve, reject) => {
-    pool.query(`SELECT user_information.*, user_login.username, user_login.password, 
-    branch.branch, blood_type.blood_type, gender_type.gender_type, 
-    marital_status.marital_status, employment_type.employment_type, 
-    position.position, user_status.status, role.role_type, 
-    team.team_name FROM user_information LEFT JOIN blood_type ON blood_type.blood_type_id = user_information.blood_type 
-    LEFT JOIN gender_type ON gender_type.gender_type_id = user_information.gender 
-    LEFT JOIN nationality ON nationality.nationality_id = user_information.citizenship 
-    LEFT JOIN marital_status ON marital_status.marital_status_id = user_information.marital_status 
-    LEFT JOIN employment_type ON employment_type.employment_type_id = user_information.employment_type 
+    pool.query(`SELECT user_information.*, 
+    position.position, team.team_name FROM user_information 
     LEFT JOIN position ON position.position_id = user_information.position 
-    LEFT JOIN user_status ON user_status.status_id = user_information.status 
-    LEFT JOIN branch ON branch.branch_id = user_information.branch_site 
-    LEFT JOIN role ON role.role_id = user_information.role_id 
-    LEFT JOIN family_relationship ON family_relationship.family_relationship_id = user_information.emergency_contact_relationship 
     LEFT JOIN team ON team.department_id = user_information.department_id JOIN user_login ON user_information.user_id = user_login.user_id WHERE user_information.user_id = ?`, [employee_user_id], function (error, result, fields) {
       if(error){
         return reject(error)
@@ -343,6 +332,17 @@ userModelAndConnection.dbpostEvent = (title, start, end, url, type, duration_sta
   });
 };
 
+userModelAndConnection.dbpostEventLocation = (calendar_id, branch_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query("Insert INTO calendar_location (calendar_id, branch_id) VALUES (?,?)", [calendar_id, branch_id], function(error, result, fields) {
+      if(error){
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
 userModelAndConnection.dbEventList = () => {
   return new Promise((resolve, reject) => {
     pool.query("SELECT * FROM calendar", function(error, result, fields) {
@@ -353,6 +353,51 @@ userModelAndConnection.dbEventList = () => {
     });
   });
 };
+
+userModelAndConnection.dbEventById = (calendar_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query("SELECT calendar.* FROM calendar Where calendar_id = ?", [calendar_id],function(error, result, fields) {
+      if(error){
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+userModelAndConnection.dbEventToEdit = (calendar_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query("SELECT calendar.*, GROUP_CONCAT(DISTINCT CONCAT(calendar_location.branch_id)) as branches FROM calendar INNER JOIN calendar_location ON calendar.calendar_id = calendar_location.calendar_id where calendar.calendar_id = ?", [calendar_id],function(error, result, fields) {
+      if(error){
+        return reject(error);
+      }
+      return resolve(result[0]);
+    });
+  });
+};
+
+userModelAndConnection.dbEventDelete = (calendar_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query("DELETE FROM calendar WHERE calendar_id = ?", [calendar_id],function(error, result, fields) {
+      if(error){
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+userModelAndConnection.dbEventDeleteLocation = (calendar_id) => {
+  return new Promise((resolve, reject) => {
+    pool.query("DELETE FROM calendar_location WHERE calendar_id = ?", [calendar_id],function(error, result, fields) {
+      if(error){
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
+};
+
 
 
 
