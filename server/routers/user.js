@@ -29,7 +29,7 @@ router.post('/api/auth/login', async (req, res) => {
       company_id: userProfile.company_id,
     }
     res.cookie('token', userData, COOKIE_OPTIONS);
-    res.status(200).json({userData, userProfile});
+    res.status(200).json({userData, userProfile, searchEmployee});
   } catch(error) {
     res.json(error)
   } 
